@@ -86,7 +86,7 @@ parser.add_argument('-ho','--holdout',default='chr19',required=False)
 parser.add_argument('-verbose','--verbose',action='store_true',default=False,required=False)
 opts=parser.parse_args()
 
-model_folders = sorted([opts.model+"/"+d for d in os.listdir(opts.model) if os.path.isdir(opts.model+"/"+d)],key = lambda x: int(x.split('_')[-1]))
+
 ensure_dir(opts.out)
 if opts.fasta == None:
     assert(opts.refFasta != None)
@@ -262,7 +262,6 @@ for mi,model in enumerate(model_folders):
     del trained_cnn
 pred_mat = pred_mat/sum(accuracies.values())
 pred_null_mat = pred_null_mat/sum(accuracies.values())
-
 
 motifs_seqs = np.array([s.split('_bg')[0] for s in seqsamples])
 scores = np.zeros((len(motifs_seqs),pred_mat.shape[1]))
