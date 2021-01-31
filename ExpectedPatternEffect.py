@@ -32,12 +32,12 @@ def motif2test(motiffile,backgroundfile):
     return np.concatenate(all_backgrounds,axis=0),np.array(null_backgrounds),names
 
 def fasta2test(fastafile,backgroundfile):
-    fastanames = [f.split('\n')[1] for f in open(fastafile).split('>')[1:]]
+    fastanames = [f.split('\n')[0] for f in open(fastafile).read().split('>')[1:]]
     fastas = fa_to_onehot(fastafile)
     names = []
     all_backgrounds = []
     for fi,fastaname in enumerate(fastanames):
-        fasta = fastas[i,:,:]
+        fasta = fastas[fi,:,:]
         backgrounds = fa_to_onehot(backgroundfile)
         start = int(backgrounds.shape[1]/2 - fasta.shape[0]/2)
         for bi in range(backgrounds.shape[0]):
@@ -65,7 +65,7 @@ def ExpectedPatternEffect(predict_function,class_ind,X_p,X,seqsets):
     for pattern in patterns:
         ind_pattern_seqs = np.where(pattern == patternseqs)[0]
         if len(class_ind) == 1:
-            num = fx_p[ind_pattern_seqs,class_ind[0]]
+            num = fx_p[ind_pattern_seqs,class_ind[0]].reshape((-1,))
             denom = fx[:,class_ind[0]].reshape((-1,))
         else:
             num = np.mean([fx_p[ind_pattern_seqs,ind] for ind in class_ind],
@@ -84,7 +84,7 @@ def ExpectedPatternEffect(predict_function,class_ind,X_p,X,seqsets):
                     "ExpectedPatternEffect":EPEs,
                     "WilcoxonTestStatistic":stats,
                     "WilcoxonSignificance":pvals,
-                    "WilcoxonSignificance":adj_pvals}
+                    "WilcoxonSignificanceAdj":adj_pvals}
 
 def DifferentialExpectedPatternEffect(predict_function,
                                       class1_ind,class2_ind,
