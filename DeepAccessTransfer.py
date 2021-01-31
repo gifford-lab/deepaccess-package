@@ -167,10 +167,10 @@ for comp in comps:
     c2 = np.array([li for li,l in enumerate(opts.labels) if l in comp[1]])
     if c1.shape[0] == 0:
         _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
-                                            c1,X,X_bg,seqsamples)
+                                            c2,X,X_bg,seqsamples)
     elif c2.shape[0] == 0:
         _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
-                                            c2,X,X_bg,seqsamples)
+                                            c1,X,X_bg,seqsamples)
     else:
         _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
                                                         c1,c2,X,X_bg,seqsamples)

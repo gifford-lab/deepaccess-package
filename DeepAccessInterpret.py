@@ -18,6 +18,7 @@ parser.add_argument('-fastas','--fastas',nargs="+",required=False,default=[])
 parser.add_argument('-l','--labels',nargs="+",required=False,default=[])
 parser.add_argument('-comparisons','--comparisons',nargs="+",required=False,default=[])
 parser.add_argument('-evalMotifs','--evalMotifs',default=None,required=False)
+parser.add_argument('-evalPatterns','--evalPatterns',default=None,required=False)
 parser.add_argument('-saliency','--saliency',default=False,action='store_true')
 parser.add_argument('-bg','--background',default="backgrounds.fa",required=False)
 parser.add_argument('-vis','--makeVis',action='store_true',default=False,required=False)
@@ -87,19 +88,47 @@ if opts.evalMotifs != None:
     for comp in comps:
         c1 = np.array([li for li,l in enumerate(opts.labels) if l in comp[0]])
         c2 = np.array([li for li,l in enumerate(opts.labels) if l in comp[1]])
-        print(c1,c2)
-        if c1.shape[0] == 0:
+        if c1.shape[0] == 0 and c2.shape[0] == 0:
+            sys.exit('Error: invalid comparison '+str(comp))
+        elif c1.shape[0] == 0:
             _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
-                                            c1,X,X_bg,seqsamples)
+                                            c2,X,X_bg,seqsamples)
         elif c2.shape[0] == 0:
             _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
-                                                c2,X,X_bg,seqsamples)
+                                                c1,X,X_bg,seqsamples)
         else:
             _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
                                                             c1,c2,X,X_bg,seqsamples)
         with open(opts.trainDir+'_EPE_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-'+motifDB+'.txt','w') as f:
             f.write('\t'.join(EPEdata.keys())+'\n')
-            print([(k,len(EPEdata[k])) for k in EPEdata.keys()])
+            for index,pattern in enumerate(EPEdata['Pattern']):            
+                f.write('\t'.join([str(EPEdata[k][index]) for k in EPEdata.keys()])+'\n')
+
+
+if opts.evalPatterns != None:
+    patternDB = opts.evalPatterns.split('/')[-1].split('.txt')[0]
+    print('----------------------------------------')
+    print('Performing Differential Motif Evaluation')
+    print('----------------------------------------')
+    X,X_bg,seqsamples = fasta2test(opts.evalPatterns,opts.background)
+    
+    comps = [(comp.strip().split('vs')[0].split(','),
+              comp.strip().split('vs')[1].split(','))
+             for comp in opts.comparisons]
+    for comp in comps:
+        c1 = np.array([li for li,l in enumerate(opts.labels) if l in comp[0]])
+        c2 = np.array([li for li,l in enumerate(opts.labels) if l in comp[1]])
+        if c1.shape[0] == 0:
+            _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
+                                            c2,X,X_bg,seqsamples)
+        elif c2.shape[0] == 0:
+            _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
+                                                c1,X,X_bg,seqsamples)
+        else:
+            _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
+                                                            c1,c2,X,X_bg,seqsamples)
+        with open(opts.trainDir+'_EPE_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-'+patternDB+'.txt','w') as f:
+            f.write('\t'.join(EPEdata.keys())+'\n')
             for index,pattern in enumerate(EPEdata['Pattern']):            
                 f.write('\t'.join([str(EPEdata[k][index]) for k in EPEdata.keys()])+'\n')
 
