@@ -7,6 +7,7 @@ import numpy as np
 from keras.models import load_model, Sequential
 from keras.layers import Conv1D, Dense, Reshape, Dropout, LSTM, GlobalMaxPooling1D, MaxPooling1D, Flatten, Input, Concatenate
 from keras import optimizers
+from importance_utils import saliency
 
 class DeepAccessTransferModel():
     def __init__(self,outdir):
@@ -40,13 +41,14 @@ class DeepAccessTransferModel():
         for mi, model in enumerate(self.model_paths):
             saliencyX += np.sum(saliency(0,model+'/model.h5',X,
                                            c1,c2,n,batch_size)*X,axis=2)
-            saliencyX*=accuracies[model]
+            saliencyX*=self.accuracies[model.split('/')[-1]]
         return saliencyX
     
     def retrain(self,X,y,n_epochs=1,verbose=0):
         sample_weights = np.ones((X.shape[0],))
         accuracies = {}
         self.nclasses = y.shape[1]
+        retrained_models = []
         for mi, model in enumerate(self.model_paths):
             cnn = keras.models.load_model(model+'/model.h5')
             #add up to last layer
@@ -72,7 +74,8 @@ class DeepAccessTransferModel():
                                 batch_size=250,
                                 verbose=verbose,
                                 callbacks=callbacks)
-            loss,train_acc = new_cnn.evaluate(X,y,batch_size=250)
+            loss,train_acc = new_cnn.evaluate(X,y,batch_size=250,
+                                              verbose=verbose)
             accuracies[model_folder] = train_acc
             new_cnn.save(model_folder+"/model.h5")
             retrained_models.append(model_folder)

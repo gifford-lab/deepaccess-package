@@ -14,6 +14,9 @@ from ExpectedPatternEffect import *
 import pickle
 from sklearn.metrics import average_precision_score
 
+#decided by trained network size
+WINDOWSIZE=100
+
 def create_train_test(bedfile,classes,out,holdout='chr19'):
     #merge categories code from merge2cat
     #plus hold out chr19 for testing
@@ -24,6 +27,9 @@ def create_train_test(bedfile,classes,out,holdout='chr19'):
 
     for line in open(bedfile):
         data = line.strip().split()
+        region_len = int(data[2]) - int(data[1])
+        if region_len < WINDOWSIZE:
+            data[2] = str(int(data[1]) + (WINDOWSIZE-region_len))
         if 'random' in data[0] or '_' in data[0]:
             continue
         if data[0] == holdout:
@@ -43,28 +49,32 @@ def create_train_test(bedfile,classes,out,holdout='chr19'):
     np.savetxt(out+'/test.txt',np.array(test_classifications))
     np.savetxt(out+'/train.txt',np.array(train_classifications))
     
-#decided by trained network size
-WINDOWSIZE=100
-MOUSEBEDFILE="mm10.100.sorted.bed"
-HUMANBEDFILE="hg38.100.sorted.bed"
 
 parser=argparse.ArgumentParser()
 parser.add_argument('-comparisons','--comparisons',nargs="+",required=True)
 parser.add_argument('-l','--labels',nargs="+",required=True)
 parser.add_argument('-out','--out',required=True)
 parser.add_argument('-ref','--refFasta',required=False,default=None)
-parser.add_argument('-g','--genome',required=False,default=None,help='genome string or chrom.sizes file')
+parser.add_argument('-g','--genome',required=False,default=None,
+                    help='genome string or chrom.sizes file')
 parser.add_argument('-beds','--bedfiles',nargs='+',required=False)
 parser.add_argument('-fa','--fasta',default=None,required=False)
-parser.add_argument('-fasta_labels','--fasta_labels',default=None,required=False)
-parser.add_argument('-f','--frac_random',required=False,default=0.1,type=float)
-parser.add_argument('-motifDB','--motifDB',default="HMv11_consensus.txt",required=False)
+parser.add_argument('-fasta_labels','--fasta_labels',default=None,
+                    required=False)
+parser.add_argument('-f','--frac_random',required=False,default=0.1,
+                    type=float)
+parser.add_argument('-motifDB','--motifDB',default="HMv11_MOUSE.txt",
+                    required=False)
 parser.add_argument('-patternFA','--patternFA',default=None,required=False)
 parser.add_argument('-bg','--bg',default="backgrounds.fa",required=False)
 parser.add_argument('-nepochs','--nepochs',default=5,type=int,required=False)
-parser.add_argument('-model','--model',default='DeepAccessMultiMouse',required=False)
-parser.add_argument('-ho','--holdout',default='chr19',required=False)
-parser.add_argument('-verbose','--verbose',action='store_true',default=False,required=False)
+parser.add_argument('-model','--model',default='DeepAccessMultiMouse',
+                    required=False)
+parser.add_argument('-ho','--holdout',default='chr19',required=False,
+                    help='chromosome to holdout')
+parser.add_argument('-verbose','--verbose',action='store_true',
+                    default=False,required=False,
+                    help='Print training progress')
 opts=parser.parse_args()
 
 ensure_dir(opts.out,exit_if_exists=True)
@@ -88,7 +98,6 @@ if opts.fasta == None:
     subprocess.call(["bedtools intersect -loj -a "+opts.out+'/windows_and_random.bed -b '+opts.out+'/all_peaks.bed > '+opts.out+'/windows_overlap_peaks.bed'],shell=True)
     subprocess.call(["bedtools groupby -grp 1,2,3 -o distinct -c 7 -i "+opts.out+'/windows_overlap_peaks.bed > '+opts.out+'/windows_grouped.bed'],shell=True)
     create_train_test(opts.out+'/windows_grouped.bed',opts.labels,opts.out,opts.holdout)
-
     subprocess.call(['bedtools getfasta -bed '+opts.out+'/train.bed -fi '+opts.refFasta+' -fo '+opts.out+'/train.fa'],shell=True)
     subprocess.call(['bedtools getfasta -bed '+opts.out+'/test.bed -fi '+opts.refFasta+' -fo '+opts.out+'/test.fa'],shell=True)
     trainX = fa_to_onehot(opts.out+'/train.fa')
@@ -168,14 +177,16 @@ for comp in comps:
     if c1.shape[0] == 0:
         _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
                                             c2,X,X_bg,seqsamples)
+        valuecol = 'ExpectedPatternEffect'
     elif c2.shape[0] == 0:
         _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
                                             c1,X,X_bg,seqsamples)
+        valuecol = 'ExpectedPatternEffect'
     else:
         _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
                                                         c1,c2,X,X_bg,seqsamples)
+        valuecol = 'DifferentialExpectedPatternEffect'
     with open(opts.out+'_EPE_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'.txt','w') as f:
         f.write('\t'.join(EPEdata.keys())+'\n')
-        print([(k,len(EPEdata[k])) for k in EPEdata.keys()])
-        for index,pattern in enumerate(EPEdata['Pattern']):            
+        for index in np.argsort(EPEdata[valuecol])[::-1]:
             f.write('\t'.join([str(EPEdata[k][index]) for k in EPEdata.keys()])+'\n')

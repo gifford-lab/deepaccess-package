@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['DeepAccessAccess-predict.py'],
-             pathex=['/data/gl/g1/jhammelm/projects/DeepAccessSquaared'],
+a = Analysis(['DeepAccessTrainTransfer.py'],
+             pathex=['/data/gl/g1/jhammelm/projects/DeepAccessSquared'],
              binaries=[('/data/gl/g1/jhammelm/env/miniconda3/envs/deepaccessaccess/lib/libmkl_core.so','.'),('/data/gl/g1/jhammelm/env/miniconda3/envs/deepaccessaccess/lib/libmkl_intel_thread.so','.'),
                        ('/data/gl/g1/jhammelm/env/miniconda3/envs/deepaccessaccess/lib/libmkl_intel_lp64.so','.'),('/data/gl/g1/jhammelm/env/miniconda3/lib/libpython3.7m.so.1.0','.'),
                        ('/data/gl/g1/jhammelm/env/miniconda3/envs/deepaccessaccess/lib/libmkl_mc3.so','.'),('/data/gl/g1/jhammelm/env/miniconda3/envs/deepaccessaccess/lib/libmkl_def.so','.'),
@@ -27,7 +27,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='DeepAccessAccess-predict',
+          name='DeepAccessTrainTransfer',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

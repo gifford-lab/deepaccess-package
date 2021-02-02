@@ -6,7 +6,6 @@ import argparse
 import os
 from CNN import *
 from ensemble_utils import *
-from importance_utils import saliency
 from DeepAccessTransferModel import *
 from ExpectedPatternEffect import *
 import pickle
@@ -32,18 +31,16 @@ DAModel.load(opts.trainDir)
 
 for fasta in opts.fastas:
     X=fa_to_onehot(fasta)
+    fname = fasta.split('/')[-1].split('.fa')[0]
     DA_pred = DAModel.predict(X)
     if opts.saliency:
         saliencyX = []
         comps = [[comp.strip().split('vs')[0].split('-'),
                   comp.strip().split('vs')[1].split('-')] for comp in opts.comparisons]
         for ci,comp in enumerate(comps):
-                c1 = [li for li,l in enumerate(opts.labels) if l in comp[0]]
-                c2 = [li for li,l in enumerate(opts.labels) if l in comp[1]]
-                saliencyX.append(DAModel.saliency_input(X,c1,c2))
-        del cnn
-    if opts.saliency:
-        for ci,comp in enumerate(comps):
+            c1 = [li for li,l in enumerate(opts.labels) if l in comp[0]]
+            c2 = [li for li,l in enumerate(opts.labels) if l in comp[1]]
+            saliencyX.append(DAModel.saliency_input(X,c1,c2))
             if opts.makeVis:
                 seqs = []
                 for seq in open(fasta).read().split('>')[1:]:
@@ -70,10 +67,10 @@ for fasta in opts.fastas:
                     plt.xticks(range(len(seqs[si])),list(seqs[si]),fontsize=10)
                     plt.ylabel('Saliency')
                     plt.savefig(opts.trainDir+'_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-saliency'+fname+'_'+str(si)+'.svg')
-
+                    
             np.savetxt(opts.trainDir+'_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-saliency'+fname+'.txt',saliencyX[ci])
-    pred_mat = pred_mat/sum(accuracies.values())
-    np.savetxt(opts.trainDir+'/'+fname+'.prediction',pred_mat)
+    
+    np.savetxt(opts.trainDir+'/'+fname+'.prediction',DA_pred)
     
 if opts.evalMotifs != None:
     motifDB = opts.evalMotifs.split('/')[-1].split('.txt')[0]
@@ -93,15 +90,18 @@ if opts.evalMotifs != None:
         elif c1.shape[0] == 0:
             _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
                                             c2,X,X_bg,seqsamples)
+            valuecol = 'ExpectedPatternEffect'
         elif c2.shape[0] == 0:
             _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
                                                 c1,X,X_bg,seqsamples)
+            valuecol = 'ExpectedPatternEffect'
         else:
             _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
                                                             c1,c2,X,X_bg,seqsamples)
+            valuecol = 'DifferentialExpectedPatternEffect'
         with open(opts.trainDir+'_EPE_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-'+motifDB+'.txt','w') as f:
             f.write('\t'.join(EPEdata.keys())+'\n')
-            for index,pattern in enumerate(EPEdata['Pattern']):            
+            for index in np.argsort(EPEdata[valuecol])[::-1]:
                 f.write('\t'.join([str(EPEdata[k][index]) for k in EPEdata.keys()])+'\n')
 
 
@@ -121,14 +121,17 @@ if opts.evalPatterns != None:
         if c1.shape[0] == 0:
             _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
                                             c2,X,X_bg,seqsamples)
+            valuecol = 'ExpectedPatternEffect'
         elif c2.shape[0] == 0:
             _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
                                                 c1,X,X_bg,seqsamples)
+            valuecol = 'ExpectedPatternEffect'
         else:
             _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
                                                             c1,c2,X,X_bg,seqsamples)
+            valuecol = 'DifferentialExpectedPatternEffect'
         with open(opts.trainDir+'_EPE_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-'+patternDB+'.txt','w') as f:
             f.write('\t'.join(EPEdata.keys())+'\n')
-            for index,pattern in enumerate(EPEdata['Pattern']):            
+            for index in np.argsort(EPEdata[valuecol])[::-1]:
                 f.write('\t'.join([str(EPEdata[k][index]) for k in EPEdata.keys()])+'\n')
 
