@@ -3,13 +3,13 @@
 The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded here.
 ## Environment setup
 Install and activate a conda environment with all necessary Python dependencies by:
-'''
+```
 conda env create -f deepaccessaccess.yml
 source activate deepaccessaccess
-'''
+```
 ## Training
 To train a DeepAccess model for a new task
-'''
+```
 usage: python DeepAccessTrainTransfer.py [-h] -comparisons COMPARISONS [COMPARISONS ...]
                                -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
                                [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
@@ -39,11 +39,11 @@ optional arguments:
   -ho HOLDOUT, --holdout HOLDOUT
                         chromosome to holdout
   -verbose, --verbose   Print training progress
-'''
+```
 
 ## Interpretation
 To run interpretation of a DeepAccess model
-'''
+```
 usage: python DeepAccessInterpret.py [-h] -trainDir TRAINDIR
                            [-fastas FASTAS [FASTAS ...]]
                            [-l LABELS [LABELS ...]]
@@ -63,4 +63,4 @@ optional arguments:
   -saliency, --saliency
   -bg BACKGROUND, --background BACKGROUND
   -vis, --makeVis
-'''
+```
