@@ -58,6 +58,19 @@ optional arguments:
                         chromosome to holdout
   -verbose, --verbose   Print training progress
 ```
+### Arguments
+| Argument   | Description | Example |
+| ---------  | ----------- | -------- |
+| -h, --help | show this help message and exit | NA |
+| -c --comparisons | list of comparisons between different labels | C1vsC2 C1,C2vsC3 runs differential between C1 vs C2 and between C1 and C2 vs C3 |
+| -l --labels | list of labels for each bed file | C1 C2 C3 |
+| -out --out  | output folder name | myoutput |
+| -ref --ref  | reference fasta; required with bed input | mm10.fa |
+| -g --genome | genome chromosome sizes; required with bed input | default/mm10.chrom.sizes |
+| -beds --bedfiles | list of bed files; one of beds or fa input required | C1.bed C2.bed C3.bed |
+| -fa --fasta | fasta file;  one of beds or fa input required | C1C2C3.fa |
+| -fasta_labels --fasta_labels | text file containing tab delimited labels (0 or 1) for each fasta line with one column for each class | C1C2C3.txt |
+| -f  -- frac_random | for bed file input fraction of random outgroup regions to add to training | 0.1 |
 
 ## Interpretation
 To run interpretation of a DeepAccess model
