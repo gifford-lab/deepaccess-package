@@ -32,14 +32,13 @@ usage: python DeepAccessTrainTransfer.py [-h] -comparisons COMPARISONS [COMPARIS
                                -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
                                [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
                                [-fa FASTA] [-fasta_labels FASTA_LABELS]
-                               [-f FRAC_RANDOM] [-motifDB MOTIFDB]
-                               [-patternFA PATTERNFA] [-bg BG]
+                               [-f FRAC_RANDOM] [-bg BG]
                                [-nepochs NEPOCHS] [-model MODEL] [-ho HOLDOUT]
                                [-verbose]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -comparisons COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
+  -c COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
   -l LABELS [LABELS ...], --labels LABELS [LABELS ...]
   -out OUT, --out OUT
   -ref REFFASTA, --refFasta REFFASTA
@@ -49,8 +48,6 @@ optional arguments:
   -fa FASTA, --fasta FASTA
   -fasta_labels FASTA_LABELS, --fasta_labels FASTA_LABELS
   -f FRAC_RANDOM, --frac_random FRAC_RANDOM
-  -motifDB MOTIFDB, --motifDB MOTIFDB
-  -patternFA PATTERNFA, --patternFA PATTERNFA
   -bg BG, --bg BG
   -nepochs NEPOCHS, --nepochs NEPOCHS
   -model MODEL, --model MODEL
@@ -62,7 +59,6 @@ optional arguments:
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |
-| -c --comparisons | list of comparisons between different labels | C1vsC2 C1,C2vsC3 runs differential between C1 vs C2 and between C1 and C2 vs C3 |
 | -l --labels | list of labels for each bed file | C1 C2 C3 |
 | -out --out  | output folder name | myoutput |
 | -ref --ref  | reference fasta; required with bed input | mm10.fa |
@@ -70,7 +66,12 @@ optional arguments:
 | -beds --bedfiles | list of bed files; one of beds or fa input required | C1.bed C2.bed C3.bed |
 | -fa --fasta | fasta file;  one of beds or fa input required | C1C2C3.fa |
 | -fasta_labels --fasta_labels | text file containing tab delimited labels (0 or 1) for each fasta line with one column for each class | C1C2C3.txt |
-| -f  -- frac_random | for bed file input fraction of random outgroup regions to add to training | 0.1 |
+| -f  --frac_random | for bed file input fraction of random outgroup regions to add to training | 0.1 |
+| -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
+| -nepochs --nepochs | number of training iterations | 1 |
+| -model --model | folder containing base model to begin training | default/DeepAccessMultiMouse |
+| -ho --holdout | chromosome name to hold out (only with bed input) | chr19 |
+| -verbose --verbose | print training and evaluation progress | NA |
 
 ## Interpretation
 To run interpretation of a DeepAccess model
@@ -88,10 +89,23 @@ optional arguments:
   -trainDir TRAINDIR, --trainDir TRAINDIR
   -fastas FASTAS [FASTAS ...], --fastas FASTAS [FASTAS ...]
   -l LABELS [LABELS ...], --labels LABELS [LABELS ...]
-  -comparisons COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
+  -c COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
   -evalMotifs EVALMOTIFS, --evalMotifs EVALMOTIFS
   -evalPatterns EVALPATTERNS, --evalPatterns EVALPATTERNS
   -saliency, --saliency
   -bg BACKGROUND, --background BACKGROUND
   -vis, --makeVis
 ```
+### Arguments 
+| Argument   | Description | Example |
+| ---------  | ----------- | -------- |
+| -h, --help | show this help message and exit | NA |
+| -trainDir --trainDir | directory containing trained DeepAccess model | test/ASCL1vsCTCF |
+| -fastas --fastas | list of fasta files to evaulate | test/ASCL1vsCTCF/test.fa |
+| -l --labels | list of labels for each bed file | C1 C2 C3 |
+| -c --comparisons | list of comparisons between different labels | ASCL1vsCTCF ASCL1vsNone runs differential EPE between ASCL1 and CTCF and EPE on ASCL1; C1,C2vsC3 runs differential EPE for (C1 and C2) vs C3 |
+| -evalMotifs --evalMotifs | PWM or PCM data base of DNA sequence motifs | default/HMv11_MOUSE.txt |
+| -evalPatterns --evalPatterns | fasta file containing DNA sequence patterns | data/ASCL1_space.fa |
+| -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
+| -saliency --saliency | calculate per base nucleotide importance | NA |
+| -vis --makeVis | to be used with saliency to make plot visualizing results | NA |

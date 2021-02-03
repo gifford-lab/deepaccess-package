@@ -51,7 +51,6 @@ def create_train_test(bedfile,classes,out,holdout='chr19'):
     
 
 parser=argparse.ArgumentParser()
-parser.add_argument('-comparisons','--comparisons',nargs="+",required=True)
 parser.add_argument('-l','--labels',nargs="+",required=True)
 parser.add_argument('-out','--out',required=True)
 parser.add_argument('-ref','--refFasta',required=False,default=None)
@@ -63,9 +62,6 @@ parser.add_argument('-fasta_labels','--fasta_labels',default=None,
                     required=False)
 parser.add_argument('-f','--frac_random',required=False,default=0.1,
                     type=float)
-parser.add_argument('-motifDB','--motifDB',default="default/HMv11_MOUSE.txt",
-                    required=False)
-parser.add_argument('-patternFA','--patternFA',default=None,required=False)
 parser.add_argument('-bg','--bg',default="default/backgrounds.fa",required=False)
 parser.add_argument('-nepochs','--nepochs',default=5,type=int,required=False)
 parser.add_argument('-model','--model',default='default/DeepAccessMultiMouse',
@@ -164,29 +160,3 @@ with open(opts.out+'/performance.txt','w') as f:
 with open(opts.out+'/performance.txt','a') as f:
     f.write('Test performance: '+str(metric(testY,test_pred))+'\n')
     
-print('----------------------------------------')
-print('Performing Differential Motif Evaluation')
-print('----------------------------------------')
-X,X_bg,seqsamples = motif2test(opts.motifDB,opts.bg)
-comps = [(comp.strip().split('vs')[0].split(','),
-          comp.strip().split('vs')[1].split(','))
-          for comp in opts.comparisons]
-for comp in comps:
-    c1 = np.array([li for li,l in enumerate(opts.labels) if l in comp[0]])
-    c2 = np.array([li for li,l in enumerate(opts.labels) if l in comp[1]])
-    if c1.shape[0] == 0:
-        _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
-                                            c2,X,X_bg,seqsamples)
-        valuecol = 'ExpectedPatternEffect'
-    elif c2.shape[0] == 0:
-        _,_,EPEdata = ExpectedPatternEffect(DAModel.predict,
-                                            c1,X,X_bg,seqsamples)
-        valuecol = 'ExpectedPatternEffect'
-    else:
-        _,_,EPEdata = DifferentialExpectedPatternEffect(DAModel.predict,
-                                                        c1,c2,X,X_bg,seqsamples)
-        valuecol = 'DifferentialExpectedPatternEffect'
-    with open(opts.out+'_EPE_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'.txt','w') as f:
-        f.write('\t'.join(EPEdata.keys())+'\n')
-        for index in np.argsort(EPEdata[valuecol])[::-1]:
-            f.write('\t'.join([str(EPEdata[k][index]) for k in EPEdata.keys()])+'\n')
