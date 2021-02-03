@@ -19,6 +19,11 @@ Install and activate a Conda environment with all necessary Python dependencies 
 conda env create -f env/deepaccessaccess.yml
 source activate deepaccessaccess
 ```
+## Example
+We include an example of training and interpreting a new DeepAccess model to predict ASCL1 and CTCF binding events from both genomic regions and genomic sequences and interpret the results:
+```
+sh run_ASCL1vsCTCF_DeepAccess.sh
+```
 
 ## Training
 To train a DeepAccess model for a new task
