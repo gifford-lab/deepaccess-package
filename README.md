@@ -1,12 +1,25 @@
 # DeepAccessTransfer
 ## Data
 The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded here.
-## Environment setup
-Install and activate a conda environment with all necessary Python dependencies by:
+
+## Dependencies
+* [Conda](https://docs.conda.io/en/latest/) (v4.9.2)
+* [bedtools](https://bedtools.readthedocs.io/en/latest/) (v2.29.2)
+
+To run DeepAccess with regions (bedfile format) you must install bedtools and add it to your path. Bedtools binaries are available [here](https://github.com/arq5x/bedtools2/releases).
+
+After installation, you can add bedtools to your path via the terminal or modifying your ~/.bashrc
 ```
-conda env create -f deepaccessaccess.yml
+export PATH="/path/to/bedtools:$PATH"
+```
+
+## Environment setup
+Install and activate a Conda environment with all necessary Python dependencies by:
+```
+conda env create -f env/deepaccessaccess.yml
 source activate deepaccessaccess
 ```
+
 ## Training
 To train a DeepAccess model for a new task
 ```
@@ -26,7 +39,7 @@ optional arguments:
   -out OUT, --out OUT
   -ref REFFASTA, --refFasta REFFASTA
   -g GENOME, --genome GENOME
-                        genome string or chrom.sizes file
+                        chrom.sizes file
   -beds BEDFILES [BEDFILES ...], --bedfiles BEDFILES [BEDFILES ...]
   -fa FASTA, --fasta FASTA
   -fasta_labels FASTA_LABELS, --fasta_labels FASTA_LABELS
