@@ -119,7 +119,7 @@ def DifferentialExpectedPatternEffect(predict_function,
         fc2 = num/denom
         stat,pval = wilcoxon(fc1,fc2)
 
-        DiffEPEs.append(np.log2(np.mean(fc1/fc2)))
+        DiffEPEs.append(np.mean(fc1-fc2))
         pvals.append(pval)
         adj_pvals.append(pval*len(patterns))
         stats.append(stat)
