@@ -1,4 +1,4 @@
-from scipy.stats import wilcoxon
+from scipy.stats import wilcoxon,t,norm
 import numpy as np
 from ensemble_utils import *
 
@@ -53,6 +53,14 @@ def fasta2test(fastafile,backgroundfile):
     null_backgrounds = fa_to_onehot(backgroundfile)
     return np.concatenate(all_backgrounds,axis=0),np.array(null_backgrounds),names
 
+def rank_ratio_statistic(num,denom):
+    ranks = np.argsort(np.abs(np.log2(num/denom)))
+    W = 0
+    n = num.shape[0]
+    for i,ri in enumerate(ranks):
+        W += np.sign(num[ri] - denom[ri])*(i+1)
+    return norm.sf(x=np.abs(W)/np.sqrt(n*(n+1)*(2*n+1)/24))*2
+                   
 def ExpectedPatternEffect(predict_function,class_ind,X_p,X,seqsets):
     fx_p = predict_function(X_p)
     fx = predict_function(X)
@@ -60,6 +68,7 @@ def ExpectedPatternEffect(predict_function,class_ind,X_p,X,seqsets):
     patterns = list(sorted(set([s.split('_EPEDistribution')[0] for s in seqsets])))
     stats = []
     pvals = []
+    ratio_pvals = []
     adj_pvals = []
     EPEs = []
     for pattern in patterns:
@@ -73,15 +82,18 @@ def ExpectedPatternEffect(predict_function,class_ind,X_p,X,seqsets):
             denom = np.mean([fx[:,ind] for ind in class_ind],
                             axis=0).reshape((-1,))
         fc = num/denom
+        ratio_pvals.append(rank_ratio_statistic(num,denom))
         stat,pval = wilcoxon(num,
                              denom)
 
-        EPEs.append(np.log2(np.mean(fc)))
+        EPEs.append(np.mean(np.log2(fc)))
         pvals.append(pval)
         adj_pvals.append(pval*len(patterns))
         stats.append(stat)
     return fx_p,fx,{"Pattern":patterns,
                     "ExpectedPatternEffect":EPEs,
+                    "Significance":ratio_pvals,
+                    "AdjustedSignificance":[r*len(patterns) for r in ratio_pvals],
                     "WilcoxonTestStatistic":stats,
                     "WilcoxonSignificance":pvals,
                     "WilcoxonSignificanceAdj":adj_pvals}
@@ -96,6 +108,7 @@ def DifferentialExpectedPatternEffect(predict_function,
     stats = []
     pvals = []
     adj_pvals = []
+    ratio_pvals = []
     DiffEPEs = []
     for pattern in patterns:
         ind_pattern_seqs = np.where(pattern == patternseqs)[0]
@@ -119,12 +132,16 @@ def DifferentialExpectedPatternEffect(predict_function,
         fc2 = num/denom
         stat,pval = wilcoxon(fc1,fc2)
 
-        DiffEPEs.append(np.log2(np.mean(fc1/fc2)))
+        DiffEPEs.append(np.mean(np.log2(fc1/fc2)))
+        ratio_pvals.append(rank_ratio_statistic(fc1,fc2))
+        
         pvals.append(pval)
         adj_pvals.append(pval*len(patterns))
         stats.append(stat)
     return fx_p,fx,{"Pattern":patterns,
                     "DifferentialExpectedPatternEffect":DiffEPEs,
+                    "Significance":ratio_pvals,
+                    "AdjustedSignificance":[r*len(patterns) for r in ratio_pvals],
                     "WilcoxonTestStatistic":stats,
                     "WilcoxonSignificance":pvals,
                     "WilcoxonSignificanceAdj":adj_pvals}
