@@ -55,11 +55,16 @@ def fasta2test(fastafile,backgroundfile):
 
 def rank_ratio_statistic(num,denom):
     ranks = np.argsort(np.abs(np.log2(num/denom)))
-    W = 0
+    Wp = 0
+    Wn = 0
     n = num.shape[0]
     for i,ri in enumerate(ranks):
-        W += np.sign(num[ri] - denom[ri])*(i+1)
-    return norm.sf(x=np.abs(W)/np.sqrt(n*(n+1)*(2*n+1)/24))*2
+        if np.sign(num[ri] - denom[ri]) == 1:
+            Wp += (i+1)
+        elif np.sign(num[ri] - denom[ri]) == -1:
+            Wn += (i+1)
+    W = min(Wp,Wn)
+    return norm.cdf(x=(W - n*(n+1)/4)/np.sqrt(n*(n+1)*(2*n+1)/24))*2
                    
 def ExpectedPatternEffect(predict_function,class_ind,X_p,X,seqsets):
     fx_p = predict_function(X_p)
