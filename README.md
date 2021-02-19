@@ -28,7 +28,7 @@ sh run_ASCL1vsCTCF_DeepAccess.sh
 ## Training
 To train a DeepAccess model for a new task
 ```
-usage: python DeepAccessTrainTransfer.py [-h] -comparisons COMPARISONS [COMPARISONS ...]
+usage: python DeepAccessTrainTransfer.py [-h] 
                                -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
                                [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
                                [-fa FASTA] [-fasta_labels FASTA_LABELS]
@@ -38,7 +38,6 @@ usage: python DeepAccessTrainTransfer.py [-h] -comparisons COMPARISONS [COMPARIS
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
   -l LABELS [LABELS ...], --labels LABELS [LABELS ...]
   -out OUT, --out OUT
   -ref REFFASTA, --refFasta REFFASTA
