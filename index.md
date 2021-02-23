@@ -1,5 +1,7 @@
 ## Quick Start
 
+These are instructions for how to run the packaged version of DeepAccess training and interpretation. If you would like to be able to make modifications to the code or run DeepAccess on GPU, you will want to use instructions for how to run DeepAccess from [source](https://github.com/gifford-lab/DeepAccessTransfer) code.  
+
 To run DeepAccess with regions (bedfile format) you must install bedtools and add it to your path. Bedtools binaries are available [here](https://github.com/arq5x/bedtools2/releases).
 After installation, you can add bedtools to your path via the terminal or modifying your ~/.bashrc
 ```markdown
@@ -56,20 +58,20 @@ optional arguments:
 
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
-| -h, --help | show this help message and exit | NA |
-| -l --labels | list of labels for each bed file | C1 C2 C3 |
-| -out --out  | output folder name | myoutput |
-| -ref --ref  | reference fasta; required with bed input | mm10.fa |
-| -g --genome | genome chromosome sizes; required with bed input | default/mm10.chrom.sizes |
-| -beds --bedfiles | list of bed files; one of beds or fa input required | C1.bed C2.bed C3.bed |
-| -fa --fasta | fasta file;  one of beds or fa input required | C1C2C3.fa |
-| -fasta_labels --fasta_labels | text file containing tab delimited labels (0 or 1) for each fasta line with one column for each class | C1C2C3.txt |
-| -f  --frac_random | for bed file input fraction of random outgroup regions to add to training | 0.1 |
-| -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
-| -nepochs --nepochs | number of training iterations | 1 |
-| -model --model | folder containing base model to begin training | default/DeepAccessMultiMouse |
-| -ho --holdout | chromosome name to hold out (only with bed input) | chr19 |
-| -verbose --verbose | print training and evaluation progress | NA |
+| -h | show this help message and exit | NA |
+| -l | list of labels for each bed file | C1 C2 C3 |
+| -out | output folder name | myoutput |
+| -ref  | reference fasta; required with bed input | mm10.fa |
+| -g | genome chromosome sizes; required with bed input | default/mm10.chrom.sizes |
+| -beds | list of bed files; one of beds or fa input required | C1.bed C2.bed C3.bed |
+| -fa  | fasta file;  one of beds or fa input required | C1C2C3.fa |
+| -fasta_labels  | text file containing tab delimited labels (0 or 1) for each fasta line with one column for each class | C1C2C3.txt |
+| -f   | for bed file input fraction of random outgroup regions to add to training | 0.1 |
+| -bg | fasta file containning background sequences | default/backgrounds.fa |
+| -nepochs  | number of training iterations | 1 |
+| -model | folder containing base model to begin training | default/DeepAccessMultiMouse |
+| -ho | chromosome name to hold out (only with bed input) | chr19 |
+| -verbose | print training and evaluation progress | NA |
 
 ## Interpretation
 We provide two methods of interpretation of trained DeepAccess models: 
@@ -108,13 +110,13 @@ optional arguments:
 
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
-| -h, --help | show this help message and exit | NA |
-| -trainDir --trainDir | directory containing trained DeepAccess model | test/ASCL1vsCTCF |
-| -fastas --fastas | list of fasta files to evaulate | test/ASCL1vsCTCF/test.fa |
-| -l --labels | list of labels for each bed file | C1 C2 C3 |
-| -c --comparisons | list of comparisons between different labels | ASCL1vsCTCF ASCL1vsNone runs differential EPE between ASCL1 and CTCF and EPE on ASCL1; C1,C2vsC3 runs differential EPE for (C1 and C2) vs C3 |
-| -evalMotifs --evalMotifs | PWM or PCM data base of DNA sequence motifs | default/HMv11_MOUSE.txt |
-| -evalPatterns --evalPatterns | fasta file containing DNA sequence patterns | data/ASCL1_space.fa |
-| -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
-| -saliency --saliency | calculate per base nucleotide importance | NA |
-| -vis --makeVis | to be used with saliency to make plot visualizing results | NA |
+| -h  | show this help message and exit | NA |
+| -trainDir  | directory containing trained DeepAccess model | test/ASCL1vsCTCF |
+| -fastas | list of fasta files to evaulate | test/ASCL1vsCTCF/test.fa |
+| -l | list of labels for each bed file | C1 C2 C3 |
+| -c  | list of comparisons between different labels | ASCL1vsCTCF ASCL1vsNone runs differential EPE between ASCL1 and CTCF and EPE on ASCL1; C1,C2vsC3 runs differential EPE for (C1 and C2) vs C3 |
+| -evalMotifs  | PWM or PCM data base of DNA sequence motifs | default/HMv11_MOUSE.txt |
+| -evalPatterns  | fasta file containing DNA sequence patterns | data/ASCL1_space.fa |
+| -bg | fasta file containning background sequences | default/backgrounds.fa |
+| -saliency | calculate per base nucleotide importance | NA |
+| -vis | to be used with saliency to make plot visualizing results | NA |
