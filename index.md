@@ -23,12 +23,12 @@ We provide support to train a DeepAccess model with either bed files or fasta fi
 ### Usage
 ```markdown
 usage: dist/DeepAccessTrainTransfer [-h] 
-                               -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
-                               [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
-                               [-fa FASTA] [-fasta_labels FASTA_LABELS]
-                               [-f FRAC_RANDOM] [-bg BG]
-                               [-nepochs NEPOCHS] [-model MODEL] [-ho HOLDOUT]
-                               [-verbose]
+            -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
+           [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
+           [-fa FASTA] [-fasta_labels FASTA_LABELS]
+           [-f FRAC_RANDOM] [-bg BG]
+           [-nepochs NEPOCHS] [-model MODEL] [-ho HOLDOUT]
+           [-verbose]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -49,7 +49,7 @@ optional arguments:
   -verbose, --verbose   Print training progress
   ```
 ### Arguments
-```
+
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |
@@ -66,7 +66,7 @@ optional arguments:
 | -model --model | folder containing base model to begin training | default/DeepAccessMultiMouse |
 | -ho --holdout | chromosome name to hold out (only with bed input) | chr19 |
 | -verbose --verbose | print training and evaluation progress | NA |
-```
+
 ## Interpretation
 We provide two methods of interpretation of trained DeepAccess models: 
 1. ExpectedPatternEffect and DifferentialExpectedPatternEffect
@@ -81,12 +81,12 @@ Per-nucleotide model importance is run using an input of one or more fastas and 
 ### Usage
 ```markdown
 usage: dist/DeepAccessInterpret [-h] -trainDir TRAINDIR
-                           [-fastas FASTAS [FASTAS ...]]
-                           [-l LABELS [LABELS ...]]
-                           [-comparisons COMPARISONS [COMPARISONS ...]]
-                           [-evalMotifs EVALMOTIFS]
-                           [-evalPatterns EVALPATTERNS] [-saliency]
-                           [-bg BACKGROUND] [-vis]
+                [-fastas FASTAS [FASTAS ...]]
+                [-l LABELS [LABELS ...]]
+                [-comparisons COMPARISONS [COMPARISONS ...]]
+                [-evalMotifs EVALMOTIFS]
+                [-evalPatterns EVALPATTERNS] [-saliency]
+                [-bg BACKGROUND] [-vis]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -101,7 +101,7 @@ optional arguments:
   -vis, --makeVis
 ```
 ### Arguments 
-```
+
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |
@@ -114,7 +114,3 @@ optional arguments:
 | -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
 | -saliency --saliency | calculate per base nucleotide importance | NA |
 | -vis --makeVis | to be used with saliency to make plot visualizing results | NA |
-```
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
