@@ -76,13 +76,13 @@ optional arguments:
 ## Interpretation
 We provide two methods of interpretation of trained DeepAccess models: 
 1. ExpectedPatternEffect and DifferentialExpectedPatternEffect
-2. Per-nucleotide model importance
+2. Per-nucleotide importance
 
-####
+#### ExpectedPatternEffect and DifferentialExpectedPatternEffect
 ExpectedPatternEffect and DifferentialExpectedPatternEffect can be run using either motifs in PWM or PCM representation (from a database like HOCOMOCO or HOMER) or patterns in a fasta representation which can be used to test spacing or combinations of motifs.
 
-####
-Per-nucleotide model importance is run using an input of one or more fastas and returns the model-derived importance of each nucleotide within each fasta sequence. 
+#### Per-nucleotide importance 
+Per-nucleotide importance is run using an input of one or more fastas and returns the model-derived importance of each nucleotide within each fasta sequence. 
 
 ### Usage
 ```markdown
