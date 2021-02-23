@@ -1,4 +1,8 @@
 #!/bin/env python
+import os
+#set local keras environment
+os.environ["KERAS_HOME"] = ".keras"
+
 import keras
 import numpy as np
 import  subprocess
