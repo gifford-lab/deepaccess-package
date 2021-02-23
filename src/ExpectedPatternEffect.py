@@ -54,15 +54,15 @@ def fasta2test(fastafile,backgroundfile):
     return np.concatenate(all_backgrounds,axis=0),np.array(null_backgrounds),names
 
 def rank_ratio_statistic(num,denom):
-    ranks = np.argsort(np.abs(np.log2(num/denom)))
+    sorted_by_ranks = np.argsort(np.abs(np.log2(num/denom)))
     Wp = 0
     Wn = 0
     n = num.shape[0]
-    for i,ri in enumerate(ranks):
+    for rank,ri in enumerate(sorted_by_ranks):
         if np.sign(num[ri] - denom[ri]) == 1:
-            Wp += (i+1)
+            Wp += (rank+1)
         elif np.sign(num[ri] - denom[ri]) == -1:
-            Wn += (i+1)
+            Wn += (rank+1)
     W = min(Wp,Wn)
     return norm.cdf(x=(W - n*(n+1)/4)/np.sqrt(n*(n+1)*(2*n+1)/24))*2
                    
