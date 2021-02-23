@@ -49,6 +49,7 @@ optional arguments:
   -verbose, --verbose   Print training progress
   ```
 ### Arguments
+```
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |
@@ -65,7 +66,7 @@ optional arguments:
 | -model --model | folder containing base model to begin training | default/DeepAccessMultiMouse |
 | -ho --holdout | chromosome name to hold out (only with bed input) | chr19 |
 | -verbose --verbose | print training and evaluation progress | NA |
-
+```
 ## Interpretation
 We provide two methods of interpretation of trained DeepAccess models: 
 1. ExpectedPatternEffect and DifferentialExpectedPatternEffect
@@ -100,6 +101,7 @@ optional arguments:
   -vis, --makeVis
 ```
 ### Arguments 
+```
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |
@@ -112,33 +114,7 @@ optional arguments:
 | -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
 | -saliency --saliency | calculate per base nucleotide importance | NA |
 | -vis --makeVis | to be used with saliency to make plot visualizing results | NA |
-
+```
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/gifford-lab/DeepAccessTransfer/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
