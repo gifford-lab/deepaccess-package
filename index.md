@@ -17,8 +17,12 @@ sh run_ASCL1vsCTCF_DeepAccessExec.sh
 
 We provide support to train a DeepAccess model with either bed files or fasta files (and labels) as input. For training from bed files, you will also need to download a reference genome and chrom.sizes file, which are available on UCSC:
 
-- mm10 [genome](http://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.fa.gz) [chrom.sizes](http://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.chrom.sizes)
-- hg38 [genome](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz) [chrom.sizes](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes)
+- mm10 
+    - [genome](http://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.fa.gz) 
+    - [chrom.sizes](http://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.chrom.sizes)
+- hg38 
+    - [genome](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz) 
+    - [chrom.sizes](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes)
 
 ### Usage
 ```markdown
