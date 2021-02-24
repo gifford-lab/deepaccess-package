@@ -1,6 +1,6 @@
 # DeepAccessTransfer
-## Data
-The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded here.
+
+This is the source code for DeepAccess training and interpretation. An executable versions and instructions on how to run can be downloaded from http://cgs.csail.mit.edu/DeepAccessTransfer/
 
 ## Dependencies
 * [Conda](https://docs.conda.io/en/latest/) (v4.9.2)
