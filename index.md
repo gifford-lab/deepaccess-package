@@ -14,6 +14,8 @@ We provide an example of how to run training and interpretation of DeepAccess in
 ```markdown
 sh run_ASCL1vsCTCF_DeepAccessExec.sh 
 ```
+## Citation
+[Discovering differential genome sequence activity with interpretable and efficient deep learning](https://www.biorxiv.org/content/10.1101/2021.02.26.433073v1.abstract?%3Fcollection=) <br />  by Jennifer Hammelman and David K. Gifford
 
 ## Training
 
