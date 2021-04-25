@@ -15,6 +15,7 @@ from ExpectedPatternEffect import *
 import pickle
 import matplotlib.pyplot as plt
 
+
 parser=argparse.ArgumentParser()
 parser.add_argument('-trainDir','--trainDir',required=True)
 parser.add_argument('-fastas','--fastas',nargs="+",required=False,default=[])

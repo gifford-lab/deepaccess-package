@@ -5,6 +5,9 @@ from keras import activations
 import keras
 import numpy as np
 from keras import activations
+import tensorflow as tf #tensorflow back end assumed
+
+tf.compat.v1.disable_eager_execution()
 
 # saliency code modified from
 # https://github.com/keras-team/keras/blob/master/examples/conv_filter_visualization.py
