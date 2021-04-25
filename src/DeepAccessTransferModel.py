@@ -4,8 +4,9 @@ import pickle
 import sys
 from ensemble_utils import ensure_dir
 import numpy as np
-from keras.models import load_model, Sequential
-from keras.layers import Conv1D, Dense, Reshape, Dropout, LSTM, GlobalMaxPooling1D, MaxPooling1D, Flatten, Input, Concatenate
+from keras.models import load_model, Sequential, Model
+from keras.layers import Conv1D, Dense, Reshape, Dropout,  Input
+from keras.layers import GlobalMaxPooling1D, MaxPooling1D, Flatten, Concatenate,Add
 from keras import optimizers
 from importance_utils import saliency
 
@@ -15,7 +16,27 @@ class DeepAccessTransferModel():
         self.accuracies = {}
         self.outdir = outdir
         ensure_dir(outdir)
-                
+        self.ensemble=None
+        
+    def _make_ensemble(self):
+        models = [load_model(mp+'/model.h5') for mp in self.model_paths]
+        model_input = Input(shape=models[0].input.shape[1:])
+        print(model_input)
+        
+        new_models = []
+        for model in models:
+            l = model_input
+            for i in range(0,len(model.layers)):
+                l = model.layers[i](l)
+            new_models.append(Model(model_input,l))
+        
+        acc = [self.accuracies[mp.split('/')[-1]] for mp in self.model_paths]
+        acc_norm = np.array(acc)/sum(acc)
+        outputs = [model.outputs[0]*acc_norm[mi] for mi,model in enumerate(new_models)]
+        y = Add()(outputs)
+        model = Model(model_input,y,name='DeepAccessEnsemble')
+        return model
+    
     def load(self,model_folder):
         self.model_paths = sorted([model_folder+"/"+d for d in
                                    os.listdir(model_folder)
@@ -26,15 +47,10 @@ class DeepAccessTransferModel():
         for key in list(initial_accuracies.keys()):
             self.accuracies[key.split('/')[-1]] = initial_accuracies[key]
         self.nclasses = np.loadtxt(model_folder+'/test.txt').shape[1]
-        
+        self.ensemble = self._make_ensemble()
+                                       
     def predict(self,X):
-        pred_mat = np.zeros((X.shape[0],self.nclasses))
-        for mi,model in enumerate(self.model_paths):
-            #load keras model
-            cnn = keras.models.load_model(model+'/model.h5')
-            predictions = cnn.predict(X)
-            pred_mat += predictions*self.accuracies[model.split('/')[-1]]
-        return pred_mat/sum(self.accuracies.values())
+        return self.ensemble.predict(X)
 
     def saliency_input(self,X,c1,c2,n=5,batch_size=256):
         saliencyX = np.zeros((X.shape[0],X.shape[1]))

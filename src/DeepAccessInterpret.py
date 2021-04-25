@@ -34,10 +34,20 @@ print('-------------------------------------')
 DAModel = DeepAccessTransferModel(opts.trainDir)
 DAModel.load(opts.trainDir)
 
+print("hello")
+fasta_hots = []
 for fasta in opts.fastas:
-    X=fa_to_onehot(fasta)
+    fasta_hots.append(fa_to_onehot(fasta))
+all_fa = np.concatenate(fasta_hots,axis=0).astype("float32")
+print(all_fa.shape)
+DA_all_preds = DAModel.predict(all_fa)
+print("goodbye")
+
+N=0
+for fasta_ind,fasta in enumerate(opts.fastas):
     fname = fasta.split('/')[-1].split('.fa')[0]
-    DA_pred = DAModel.predict(X)
+    DA_fa_pred = DA_all_preds[N:N+fasta_hots[fasta_ind].shape[0],:]
+    X = fasta_hots[fasta_ind]
     if opts.saliency:
         saliencyX = []
         comps = [[comp.strip().split('vs')[0].split('-'),
@@ -75,7 +85,7 @@ for fasta in opts.fastas:
                     
             np.savetxt(opts.trainDir+'_'+'-'.join(comp[0])+'vs'+'-'.join(comp[1])+'-saliency'+fname+'.txt',saliencyX[ci])
     
-    np.savetxt(opts.trainDir+'/'+fname+'.prediction',DA_pred)
+    np.savetxt(opts.trainDir+'/'+fname+'.prediction',DA_fa_pred)
     
 if opts.evalMotifs != None:
     motifDB = opts.evalMotifs.split('/')[-1].split('.txt')[0]
