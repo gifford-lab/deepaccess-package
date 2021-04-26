@@ -34,14 +34,12 @@ print('-------------------------------------')
 DAModel = DeepAccessTransferModel(opts.trainDir)
 DAModel.load(opts.trainDir)
 
-print("hello")
 fasta_hots = []
 for fasta in opts.fastas:
     fasta_hots.append(fa_to_onehot(fasta))
 all_fa = np.concatenate(fasta_hots,axis=0).astype("float32")
 print(all_fa.shape)
 DA_all_preds = DAModel.predict(all_fa)
-print("goodbye")
 
 N=0
 for fasta_ind,fasta in enumerate(opts.fastas):

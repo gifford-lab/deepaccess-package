@@ -56,7 +56,10 @@ class DeepAccessTransferModel():
         saliencyX = np.zeros((X.shape[0],X.shape[1]))
         for mi, model in enumerate(self.model_paths):
             saliencyX += np.sum(saliency(0,model+'/model.h5',X,
-                                           c1,c2,n,batch_size)*X,axis=2)
+                                         c1,c2,
+                                         n=n,
+                                         lambda_reg=0.1,
+                                         batch_size=batch_size)*X,axis=2)
             saliencyX*=self.accuracies[model.split('/')[-1]]
         return saliencyX
     
