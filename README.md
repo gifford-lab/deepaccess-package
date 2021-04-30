@@ -1,6 +1,6 @@
 # DeepAccessTransfer
 ## Data
-The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded [here] (https://zenodo.org/record/4495606/).
+The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded [here](https://zenodo.org/record/4495606/).
 
 ## Dependencies
 * [Conda](https://docs.conda.io/en/latest/) (v4.9.2)
