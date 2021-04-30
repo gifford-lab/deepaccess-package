@@ -1,6 +1,6 @@
 # DeepAccessTransfer
 ## Data
-The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded here.
+The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded [here] (https://zenodo.org/record/4495606/).
 
 ## Dependencies
 * [Conda](https://docs.conda.io/en/latest/) (v4.9.2)
@@ -16,8 +16,8 @@ export PATH="/path/to/bedtools:$PATH"
 ## Environment setup
 Install and activate a Conda environment with all necessary Python dependencies by:
 ```
-conda env create -f env/deepaccessaccess.yml
-source activate deepaccessaccess
+conda env create -f env/deepaccesstf2.yml
+source activate deepaccesstf2
 ```
 ## Example
 We include an example of training and interpreting a new DeepAccess model to predict ASCL1 and CTCF binding events from both genomic regions and genomic sequences and interpret the results:
