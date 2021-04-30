@@ -35,11 +35,11 @@ def motif2test(motiffile, backgroundfile):
 
 def fasta2test(fastafile, backgroundfile):
     fastanames = [f.split("\n")[0] for f in open(fastafile).read().split(">")[1:]]
-    fastas = fa_to_onehot(fastafile)
+    fastas = fa_to_onehot(fastafile,make_uniform_length=False)
     names = []
     all_backgrounds = []
     for fi, fastaname in enumerate(fastanames):
-        fasta = fastas[fi, :, :]
+        fasta = fastas[fi]
         backgrounds = fa_to_onehot(backgroundfile)
         start = int(backgrounds.shape[1] / 2 - fasta.shape[0] / 2)
         for bi in range(backgrounds.shape[0]):
