@@ -1,10 +1,12 @@
 import os
 import keras
 import pickle
+import sys
 from ensemble_utils import ensure_dir
 import numpy as np
 from keras.models import load_model, Sequential, Model
-from keras.layers import Dense, Input, Add
+from keras.layers import Conv1D, Dense, Reshape, Dropout, Input
+from keras.layers import GlobalMaxPooling1D, MaxPooling1D, Flatten, Concatenate, Add
 from keras import optimizers
 from importance_utils import saliency
 
@@ -31,8 +33,7 @@ class DeepAccessTransferModel:
         acc = [self.accuracies[mp.split("/")[-1]] for mp in self.model_paths]
         acc_norm = np.array(acc) / sum(acc)
         outputs = [
-            model.outputs[0] * acc_norm[mi]
-            for mi, model in enumerate(new_models)
+            model.outputs[0] * acc_norm[mi] for mi, model in enumerate(new_models)
         ]
         y = Add()(outputs)
         model = Model(model_input, y, name="DeepAccessEnsemble")
@@ -90,14 +91,9 @@ class DeepAccessTransferModel:
                 new_cnn.add(layer)
                 # add new layer with new output
             new_cnn.add(Dense(y.shape[1], activation="sigmoid"))
-            adam = optimizers.Adam(
-                lr=1e-4,
-                clipnorm=0.5,
-                decay=(1e-4 / 100.0))
+            adam = optimizers.Adam(lr=1e-4, clipnorm=0.5, decay=(1e-4 / 100.0))
             new_cnn.compile(
-                optimizer=adam,
-                loss="binary_crossentropy",
-                metrics=["accuracy"]
+                optimizer=adam, loss="binary_crossentropy", metrics=["accuracy"]
             )
 
             model_folder = self.outdir + "/" + model.split("/")[-1]
@@ -116,11 +112,7 @@ class DeepAccessTransferModel:
                 verbose=verbose,
                 callbacks=callbacks,
             )
-            loss, train_acc = new_cnn.evaluate(
-                X,
-                y,
-                batch_size=250,
-                verbose=verbose)
+            loss, train_acc = new_cnn.evaluate(X, y, batch_size=250, verbose=verbose)
             accuracies[model_folder] = train_acc
             new_cnn.save(model_folder + "/model.h5")
             retrained_models.append(model_folder)
@@ -130,16 +122,13 @@ class DeepAccessTransferModel:
                 f.write(new_cnn.to_yaml())
                 f.write("\nTraining Accuracy: " + str(train_acc) + "\n")
 
-            sample_weights += np.linalg.norm(
-                y - new_cnn.predict(X, batch_size=250)
-            )
-
+            sample_weights += np.linalg.norm(y - new_cnn.predict(X, batch_size=250))
             del cnn
             del new_cnn
         self.model_paths = retrained_models
         for key in list(accuracies.keys()):
             self.accuracies[key.split("/")[-1]] = accuracies[key]
         self.ensemble = self._make_ensemble()
-
+            
         with open(self.outdir + "/model_acc.pkl", "wb") as f:
             pickle.dump(accuracies, f)

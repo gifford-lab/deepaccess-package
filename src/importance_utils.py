@@ -25,6 +25,11 @@ def saliency(
     batch_size=100,
 ):
     model = load_model(model_file)
+    inp = model.input  # input placeholder
+    outputs = [layer.output for layer in model.layers]  # all layer outputs
+    functors = [
+        tf.keras.backend.function([inp], [out]) for out in outputs
+    ]  # evaluation functions
     input_l = Input(
         shape=tuple(model.layers[conv_layer].input.get_shape().as_list()[1:])
     )
@@ -43,13 +48,11 @@ def saliency(
         if (batch_start + batch_size) > input_data.shape[0]:
             batch_in = input_data[batch_start:, :, :]
         else:
-            batch_in = input_data[batch_start:(batch_start + batch_size), :, :]
+            batch_in = input_data[batch_start : (batch_start + batch_size), :, :]
         ngrads = []
         for _ in range(n):
             input_seq = tf.cast(
-                batch_in + np.random.normal(
-                    size=batch_in.shape, loc=0, scale=0.2
-                ),
+                batch_in + np.random.normal(size=batch_in.shape, loc=0, scale=0.2),
                 tf.float32,
             )
 
@@ -65,10 +68,7 @@ def saliency(
                     loss += lambda_reg * tf.abs(input_seq)
                 elif len(neg_index) == 0:
                     loss = tf.reduce_mean(
-                        tf.reduce_sum(
-                            [layer_output[:, pi] for pi in pos_index],
-                            axis=1
-                        )
+                        tf.reduce_sum([layer_output[:, pi] for pi in pos_index], axis=1)
                     )
                     loss += lambda_reg * tf.abs(input_seq)
                 else:

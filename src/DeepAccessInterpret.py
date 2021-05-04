@@ -7,7 +7,7 @@ os.environ["KERAS_HOME"] = ".keras"
 import numpy as np
 import subprocess
 import argparse
-import os,sys
+import os
 from CNN import *
 from ensemble_utils import *
 from DeepAccessTransferModel import *
@@ -194,7 +194,7 @@ if opts.evalMotifs is not None:
                 )
 
 
-if opts.evalPatterns is not None:
+if opts.evalPatterns != None:
     patternDB = opts.evalPatterns.split("/")[-1].split(".txt")[0]
     print("----------------------------------------")
     print("Performing Differential Motif Evaluation")
@@ -215,7 +215,7 @@ if opts.evalPatterns is not None:
     else:
         method = ExpectedPatternEffect
         diffmethod = DifferentialExpectedPatternEffect
-
+        
     for comp in comps:
         print(comps)
         c1 = np.array([li for li, l in enumerate(opts.labels) if l in comp[0]])
@@ -236,7 +236,7 @@ if opts.evalPatterns is not None:
             )
             valuecol = "DifferentialExpectedPatternEffect"
         if opts.subtract:
-            patternDB = "_subtraction_" + patternDB
+            patternDB = "_subtraction_" + patternDB 
         with open(
             opts.trainDir
             + "_EPE_"
@@ -251,6 +251,5 @@ if opts.evalPatterns is not None:
             f.write("\t".join(EPEdata.keys()) + "\n")
             for index in np.argsort(EPEdata[valuecol])[::-1]:
                 f.write(
-                    "\t".join([str(EPEdata[k][index])
-                               for k in EPEdata.keys()]) + "\n"
+                    "\t".join([str(EPEdata[k][index]) for k in EPEdata.keys()]) + "\n"
                 )
