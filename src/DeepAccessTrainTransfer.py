@@ -1,11 +1,9 @@
-
 #!/bin/env python
 import os
 
 # set local keras environment
 os.environ["KERAS_HOME"] = ".keras"
 
-import keras
 import numpy as np
 import subprocess
 import argparse
@@ -13,7 +11,6 @@ from CNN import *
 from DeepAccessTransferModel import *
 from ensemble_utils import *
 from ExpectedPatternEffect import *
-import pickle
 from sklearn.metrics import average_precision_score
 
 # decided by trained network size
@@ -25,8 +22,6 @@ def create_train_test(bedfile, classes, out, holdout="chr19"):
     # plus hold out chr19 for testing
     train_classifications = []
     test_classifications = []
-    train_beds = []
-    test_beds = []
 
     for line in open(bedfile):
         data = line.strip().split()
@@ -70,23 +65,43 @@ def create_train_test(bedfile, classes, out, holdout="chr19"):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-l", "--labels", nargs="+", required=True)
-parser.add_argument("-out", "--out", required=True)
-parser.add_argument("-ref", "--refFasta", required=False, default=None)
 parser.add_argument(
-    "-g", "--genome", required=False, default=None, help="genome chrom.sizes file"
+    "-l", "--labels", nargs="+", required=True
 )
-parser.add_argument("-beds", "--bedfiles", nargs="+", required=False)
-parser.add_argument("-fa", "--fasta", default=None, required=False)
-parser.add_argument("-fasta_labels", "--fasta_labels", default=None, required=False)
-parser.add_argument("-f", "--frac_random", required=False, default=0.1, type=float)
-parser.add_argument("-bg", "--bg", default="default/backgrounds.fa", required=False)
-parser.add_argument("-nepochs", "--nepochs", default=5, type=int, required=False)
+parser.add_argument(
+    "-out", "--out", required=True
+)
+parser.add_argument(
+    "-ref", "--refFasta", required=False, default=None
+)
+parser.add_argument(
+    "-g", "--genome", required=False, default=None,
+    help="genome chrom.sizes file"
+)
+parser.add_argument(
+    "-beds", "--bedfiles", nargs="+", required=False
+)
+parser.add_argument(
+    "-fa", "--fasta", default=None, required=False
+)
+parser.add_argument(
+    "-fasta_labels", "--fasta_labels", default=None, required=False
+)
+parser.add_argument(
+    "-f", "--frac_random", required=False, default=0.1, type=float
+)
+parser.add_argument(
+    "-bg", "--bg", default="default/backgrounds.fa", required=False
+)
+parser.add_argument(
+    "-nepochs", "--nepochs", default=5, type=int, required=False
+)
 parser.add_argument(
     "-model", "--model", default="default/DeepAccessMultiMouse", required=False
 )
 parser.add_argument(
-    "-ho", "--holdout", default="chr19", required=False, help="chromosome to holdout"
+    "-ho", "--holdout", default="chr19", required=False,
+    help="chromosome to holdout"
 )
 parser.add_argument(
     "-verbose",
@@ -100,9 +115,9 @@ opts = parser.parse_args()
 
 ensure_dir(opts.out, exit_if_exists=True)
 
-if opts.fasta == None:
-    assert opts.refFasta != None
-    assert opts.genome != None
+if opts.fasta is None:
+    assert opts.refFasta is not None
+    assert opts.genome is not None
     assert len(opts.labels) == len(opts.bedfiles)
     total_peaks = 0
     with open(opts.out + "/all_peaks.bed", "a") as f:
@@ -220,13 +235,13 @@ if opts.fasta == None:
     testY = np.loadtxt(opts.out + "/test.txt")
 
 else:
-    fasta_all = [l for l in open(opts.fasta).read().split(">")[1:]]
+    fasta_all = [line for line in open(opts.fasta).read().split(">")[1:]]
     label_all = open(opts.fasta_labels).readlines()
     assert len(fasta_all) == len(label_all)
     assert len(label_all[0].strip().split("\t")) == len(opts.labels)
     random_index = np.random.permutation(len(fasta_all))
-    test_index = random_index[: int(len(fasta_all) * 0.1)]
-    train_index = random_index[int(len(fasta_all) * 0.1) :]
+    test_index = random_index[:int(len(fasta_all) * 0.1)]
+    train_index = random_index[int(len(fasta_all) * 0.1):]
     with open(opts.out + "/train.fa", "w") as f:
         for i in train_index:
             f.write(">" + fasta_all[i])
@@ -267,7 +282,7 @@ train_pred = DAModel.predict(trainX)
 test_pred = DAModel.predict(testX)
 np.savetxt(opts.out + "/train_predictions.txt", train_pred)
 np.savetxt(opts.out + "/test_predictions.txt", test_pred)
-print(trainY.shape,train_pred.shape)
+print(trainY.shape, train_pred.shape)
 metric = average_precision_score
 with open(opts.out + "/performance.txt", "w") as f:
     f.write("Train performance: " + str(metric(trainY, train_pred)) + "\n")
