@@ -4,27 +4,41 @@ import os
 # set local keras environment
 os.environ["KERAS_HOME"] = ".keras"
 
-import keras
 import numpy as np
 import subprocess
 import argparse
-import os
+import os,sys
 from CNN import *
 from ensemble_utils import *
 from DeepAccessTransferModel import *
 from ExpectedPatternEffect import *
-import pickle
 import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-trainDir", "--trainDir", required=True)
-parser.add_argument("-fastas", "--fastas", nargs="+", required=False, default=[])
-parser.add_argument("-l", "--labels", nargs="+", required=False, default=[])
-parser.add_argument("-c", "--comparisons", nargs="+", required=False, default=[])
-parser.add_argument("-evalMotifs", "--evalMotifs", default=None, required=False)
-parser.add_argument("-evalPatterns", "--evalPatterns", default=None, required=False)
-parser.add_argument("-saliency", "--saliency", default=False, action="store_true")
-parser.add_argument("-subtract", "--subtract", default=False, action="store_true")
+parser.add_argument(
+    "-trainDir", "--trainDir", required=True
+)
+parser.add_argument(
+    "-fastas", "--fastas", nargs="+", required=False, default=[]
+)
+parser.add_argument(
+    "-l", "--labels", nargs="+", required=False, default=[]
+)
+parser.add_argument(
+    "-c", "--comparisons", nargs="+", required=False, default=[]
+)
+parser.add_argument(
+    "-evalMotifs", "--evalMotifs", default=None, required=False
+)
+parser.add_argument(
+    "-evalPatterns", "--evalPatterns", default=None, required=False
+)
+parser.add_argument(
+    "-saliency", "--saliency", default=False, action="store_true"
+)
+parser.add_argument(
+    "-subtract", "--subtract", default=False, action="store_true"
+)
 parser.add_argument(
     "-bg", "--background", default="default/backgrounds.fa", required=False
 )
@@ -42,7 +56,7 @@ DAModel.load(opts.trainDir)
 fasta_hots = []
 for fasta in opts.fastas:
     fasta_hots.append(fa_to_onehot(fasta))
-    
+
 N = 0
 for fasta_ind, fasta in enumerate(opts.fastas):
     fname = fasta.split("/")[-1].split(".fa")[0]
@@ -87,7 +101,9 @@ for fasta_ind, fasta in enumerate(opts.fastas):
                             ax.get_children()[i].set_color("gold")
                         else:
                             ax.get_children()[i].set_color("k")
-                    plt.xticks(range(len(seqs[si])), list(seqs[si]), fontsize=10)
+                    plt.xticks(
+                        range(len(seqs[si])), list(seqs[si]), fontsize=10
+                    )
                     plt.ylabel("Saliency")
                     plt.savefig(
                         opts.trainDir
@@ -116,7 +132,7 @@ for fasta_ind, fasta in enumerate(opts.fastas):
 
     np.savetxt(opts.trainDir + "/" + fname + ".prediction", DA_fa_pred)
 
-if opts.evalMotifs != None:
+if opts.evalMotifs is not None:
     motifDB = opts.evalMotifs.split("/")[-1].split(".txt")[0]
     print("----------------------------------------")
     print("Performing Differential Motif Evaluation")
@@ -124,7 +140,8 @@ if opts.evalMotifs != None:
     X, X_bg, seqsamples = motif2test(opts.evalMotifs, opts.background)
 
     comps = [
-        (comp.strip().split("vs")[0].split(","), comp.strip().split("vs")[1].split(","))
+        (comp.strip().split("vs")[0].split(","),
+         comp.strip().split("vs")[1].split(","))
         for comp in opts.comparisons
     ]
     print(opts.comparisons)
@@ -137,7 +154,7 @@ if opts.evalMotifs != None:
         method = ExpectedPatternEffect
         diffmethod = DifferentialExpectedPatternEffect
     if opts.subtract:
-            motifDB = "_subtraction_" + motifDB 
+        motifDB = "_subtraction_" + motifDB
     for comp in comps:
         c1 = np.array([li for li, l in enumerate(opts.labels) if l in comp[0]])
         c2 = np.array([li for li, l in enumerate(opts.labels) if l in comp[1]])
@@ -172,11 +189,12 @@ if opts.evalMotifs != None:
             f.write("\t".join(EPEdata.keys()) + "\n")
             for index in np.argsort(EPEdata[valuecol])[::-1]:
                 f.write(
-                    "\t".join([str(EPEdata[k][index]) for k in EPEdata.keys()]) + "\n"
+                    "\t".join([str(EPEdata[k][index])
+                               for k in EPEdata.keys()]) + "\n"
                 )
 
 
-if opts.evalPatterns != None:
+if opts.evalPatterns is not None:
     patternDB = opts.evalPatterns.split("/")[-1].split(".txt")[0]
     print("----------------------------------------")
     print("Performing Differential Motif Evaluation")
@@ -184,7 +202,8 @@ if opts.evalPatterns != None:
     X, X_bg, seqsamples = fasta2test(opts.evalPatterns, opts.background)
 
     comps = [
-        (comp.strip().split("vs")[0].split(","), comp.strip().split("vs")[1].split(","))
+        (comp.strip().split("vs")[0].split(","),
+         comp.strip().split("vs")[1].split(","))
         for comp in opts.comparisons
     ]
     print(opts.comparisons)
@@ -196,7 +215,7 @@ if opts.evalPatterns != None:
     else:
         method = ExpectedPatternEffect
         diffmethod = DifferentialExpectedPatternEffect
-        
+
     for comp in comps:
         print(comps)
         c1 = np.array([li for li, l in enumerate(opts.labels) if l in comp[0]])
@@ -217,7 +236,7 @@ if opts.evalPatterns != None:
             )
             valuecol = "DifferentialExpectedPatternEffect"
         if opts.subtract:
-            patternDB = "_subtraction_" + patternDB 
+            patternDB = "_subtraction_" + patternDB
         with open(
             opts.trainDir
             + "_EPE_"
@@ -232,5 +251,6 @@ if opts.evalPatterns != None:
             f.write("\t".join(EPEdata.keys()) + "\n")
             for index in np.argsort(EPEdata[valuecol])[::-1]:
                 f.write(
-                    "\t".join([str(EPEdata[k][index]) for k in EPEdata.keys()]) + "\n"
+                    "\t".join([str(EPEdata[k][index])
+                               for k in EPEdata.keys()]) + "\n"
                 )

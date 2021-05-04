@@ -23,7 +23,8 @@ def act_to_class(act):
         y.append([int(d) for d in data[1:]])
     return np.array(y)
 
-def fa_to_onehot(fa,make_uniform_length=True):
+
+def fa_to_onehot(fa, make_uniform_length=True):
     alpha = ["A", "C", "G", "T"]
     sequences = open(fa).read().split(">")[1:]
     seqdict = [seq.strip().split("\n")[1] for seq in sequences]
@@ -41,5 +42,7 @@ def fa_to_onehot(fa,make_uniform_length=True):
                 aind = alpha.index(c)
                 seq[j, aind] = 1
         seq_mat.append(seq)
-    if make_uniform_length: return np.array(seq_mat)
-    else: return seq_mat
+    if make_uniform_length:
+        return np.array(seq_mat)
+    else:
+        return seq_mat

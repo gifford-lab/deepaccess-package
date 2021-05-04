@@ -1,24 +1,21 @@
 import keras
 import numpy as np
-from keras.models import Model, load_model, Sequential
+from keras.models import Sequential
 from keras.layers import (
     Conv1D,
     Dense,
-    Reshape,
     Dropout,
     LSTM,
     GlobalMaxPooling1D,
     MaxPooling1D,
     Flatten,
-    Input,
-    Concatenate,
 )
-import tensorflow as tf
 from keras import optimizers
 
-# CNN code for motif convolutional layer
-# taken from https://github.com/uci-cbcl/DanQ
+
 class CNN:
+    # CNN code for motif convolutional layer
+    # taken from https://github.com/uci-cbcl/DanQ
     def __init__(
         self,
         model_layers,
@@ -31,10 +28,8 @@ class CNN:
         for i, layer in enumerate(model_layers):
             if layer == "conv":
                 if i == 0:
-                    HOMER_motifs = list(np.load("homer_matrix.npy", allow_pickle=True))
-                    filter_len = max(
-                        [HOMER_motifs[k].shape[0] for k in range(len(HOMER_motifs))]
-                    )
+                    HOMER_motifs = list(np.load("homer_matrix.npy",
+                                                allow_pickle=True))
                     conv_layer = Conv1D(
                         input_shape=seq_shape,
                         filters=len(HOMER_motifs) * 2,
@@ -47,7 +42,8 @@ class CNN:
                     conv_weights = conv_layer.get_weights()
 
                     reverse_motifs = [
-                        HOMER_motifs[j][::-1, ::-1] for j in range(len(HOMER_motifs))
+                        HOMER_motifs[j][::-1, ::-1]
+                        for j in range(len(HOMER_motifs))
                     ]
                     HOMER_motifs = HOMER_motifs + reverse_motifs
 
@@ -56,8 +52,9 @@ class CNN:
                         w = m.shape[0]
                         conv_weights[0][:, :, j] = 0
                         start = np.random.randint(low=3, high=35 - w - 3 + 1)
-                        conv_weights[0][start : (start + w), :, j] = m - 0.25
-                        conv_weights[1][j] = np.random.uniform(low=-1.0, high=0.0)
+                        conv_weights[0][start:(start + w), :, j] = m - 0.25
+                        conv_weights[1][j] = np.random.uniform(low=-1.0,
+                                                               high=0.0)
 
                     conv_layer.set_weights(conv_weights)
                     conv_layer.trainable = False
@@ -79,13 +76,18 @@ class CNN:
             if layer == "dense":
                 model.add(Dropout(0.1))
                 model.add(Dense(128, activation="relu"))
-
         if "dense" not in model_layers and "globalpool" not in model_layers:
             model.add(Flatten())
+
         model.add(Dropout(0.1))
         model.add(Dense(out_shape, activation="sigmoid"))
-        adam = optimizers.Adam(lr=1e-4, clipnorm=0.5, decay=(1e-4 / 100.0))
-        model.compile(optimizer=adam, loss="binary_crossentropy", metrics=["accuracy"])
+
+        adam = optimizers.Adam(lr=1e-4,
+                               clipnorm=0.5,
+                               decay=(1e-4 / 100.0))
+        model.compile(optimizer=adam,
+                      loss="binary_crossentropy",
+                      metrics=["accuracy"])
         self.model = model
 
     def train(self, X, y, sample_weights, n_epochs=100):

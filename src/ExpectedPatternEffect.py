@@ -1,4 +1,4 @@
-from scipy.stats import wilcoxon, t, norm
+from scipy.stats import wilcoxon, norm
 import numpy as np
 from ensemble_utils import *
 
@@ -30,12 +30,18 @@ def motif2test(motiffile, backgroundfile):
         all_backgrounds.append(backgrounds)
 
     null_backgrounds = fa_to_onehot(backgroundfile)
-    return np.concatenate(all_backgrounds, axis=0), np.array(null_backgrounds), names
+    return (
+        np.concatenate(all_backgrounds, axis=0),
+        np.array(null_backgrounds),
+        names
+        )
 
 
 def fasta2test(fastafile, backgroundfile):
-    fastanames = [f.split("\n")[0] for f in open(fastafile).read().split(">")[1:]]
-    fastas = fa_to_onehot(fastafile,make_uniform_length=False)
+    fastanames = [
+        f.split("\n")[0] for f in open(fastafile).read().split(">")[1:]
+    ]
+    fastas = fa_to_onehot(fastafile, make_uniform_length=False)
     names = []
     all_backgrounds = []
     for fi, fastaname in enumerate(fastanames):
@@ -53,7 +59,11 @@ def fasta2test(fastafile, backgroundfile):
             names.append(fastaname + "_EPEDistribution_" + str(bi))
         all_backgrounds.append(backgrounds)
     null_backgrounds = fa_to_onehot(backgroundfile)
-    return np.concatenate(all_backgrounds, axis=0), np.array(null_backgrounds), names
+    return (
+        np.concatenate(all_backgrounds, axis=0),
+        np.array(null_backgrounds),
+        names
+        )
 
 
 def rank_ratio_statistic(num, denom):
@@ -67,8 +77,10 @@ def rank_ratio_statistic(num, denom):
         elif np.sign(num[ri] - denom[ri]) == -1:
             Wn += rank + 1
     W = min(Wp, Wn)
-    return (
-        norm.cdf(x=(W - n * (n + 1) / 4) / np.sqrt(n * (n + 1) * (2 * n + 1) / 24)) * 2
+    denom = np.sqrt(n * (n + 1) * (2 * n + 1) / 24)
+    num = (W - n * (n + 1) / 4)
+    return(
+        norm.cdf(x=(num / denom)) * 2
     )
 
 
@@ -76,7 +88,11 @@ def ExpectedPatternEffect(predict_function, class_ind, X_p, X, seqsets):
     fx_p = predict_function(X_p)
     fx = predict_function(X)
     patternseqs = np.array([s.split("_EPEDistribution")[0] for s in seqsets])
-    patterns = list(sorted(set([s.split("_EPEDistribution")[0] for s in seqsets])))
+    patterns = list(
+        sorted(
+            set([s.split("_EPEDistribution")[0] for s in seqsets])
+        )
+    )
     stats = []
     pvals = []
     ratio_pvals = []
@@ -91,7 +107,9 @@ def ExpectedPatternEffect(predict_function, class_ind, X_p, X, seqsets):
             num = np.mean(
                 [fx_p[ind_pattern_seqs, ind] for ind in class_ind], axis=0
             ).reshape((-1,))
-            denom = np.mean([fx[:, ind] for ind in class_ind], axis=0).reshape((-1,))
+            denom = np.mean(
+                [fx[:, ind] for ind in class_ind], axis=0
+            ).reshape((-1,))
         fc = num / denom
         ratio_pvals.append(rank_ratio_statistic(num, denom))
         stat, pval = wilcoxon(num, denom)
@@ -100,7 +118,7 @@ def ExpectedPatternEffect(predict_function, class_ind, X_p, X, seqsets):
         pvals.append(pval)
         adj_pvals.append(pval * len(patterns))
         stats.append(stat)
-    return (
+    return(
         fx_p,
         fx,
         {
@@ -122,7 +140,11 @@ def DifferentialExpectedPatternEffect(
         predict_function, class1_ind, X_p, X, seqsets
     )
     patternseqs = np.array([s.split("_EPEDistribution")[0] for s in seqsets])
-    patterns = list(set(sorted([s.split("_EPEDistribution")[0] for s in seqsets])))
+    patterns = list(
+        set(
+            sorted([s.split("_EPEDistribution")[0] for s in seqsets])
+        )
+    )
     stats = []
     pvals = []
     adj_pvals = []
@@ -137,7 +159,9 @@ def DifferentialExpectedPatternEffect(
             num = np.mean(
                 [fx_p[ind_pattern_seqs, ind] for ind in class1_ind], axis=0
             ).reshape((-1,))
-            denom = np.mean([fx[:, ind] for ind in class1_ind], axis=0).reshape((-1,))
+            denom = np.mean(
+                [fx[:, ind] for ind in class1_ind], axis=0
+            ).reshape((-1,))
         fc1 = num / denom
         if len(class2_ind) == 1:
             num = fx_p[ind_pattern_seqs, class2_ind].reshape((-1,))
@@ -146,7 +170,9 @@ def DifferentialExpectedPatternEffect(
             num = np.mean(
                 [fx_p[ind_pattern_seqs, ind] for ind in class2_ind], axis=0
             ).reshape((-1,))
-            denom = np.mean([fx[:, ind] for ind in class2_ind], axis=0).reshape((-1,))
+            denom = np.mean(
+                [fx[:, ind] for ind in class2_ind], axis=0
+            ).reshape((-1,))
         fc2 = num / denom
         stat, pval = wilcoxon(fc1, fc2)
 
@@ -156,7 +182,7 @@ def DifferentialExpectedPatternEffect(
         pvals.append(pval)
         adj_pvals.append(pval * len(patterns))
         stats.append(stat)
-    return (
+    return(
         fx_p,
         fx,
         {
@@ -170,6 +196,7 @@ def DifferentialExpectedPatternEffect(
         },
     )
 
+
 def SubtractDifferentialExpectedPatternEffect(
     predict_function, class1_ind, class2_ind, X_p, X, seqsets
 ):
@@ -177,7 +204,9 @@ def SubtractDifferentialExpectedPatternEffect(
         predict_function, class1_ind, X_p, X, seqsets
     )
     patternseqs = np.array([s.split("_EPEDistribution")[0] for s in seqsets])
-    patterns = list(set(sorted([s.split("_EPEDistribution")[0] for s in seqsets])))
+    patterns = list(
+        set(sorted([s.split("_EPEDistribution")[0] for s in seqsets]))
+    )
     stats = []
     pvals = []
     adj_pvals = []
@@ -192,7 +221,9 @@ def SubtractDifferentialExpectedPatternEffect(
             num = np.mean(
                 [fx_p[ind_pattern_seqs, ind] for ind in class1_ind], axis=0
             ).reshape((-1,))
-            denom = np.mean([fx[:, ind] for ind in class1_ind], axis=0).reshape((-1,))
+            denom = np.mean(
+                [fx[:, ind] for ind in class1_ind], axis=0
+            ).reshape((-1,))
         fc1 = num / denom
         if len(class2_ind) == 1:
             num = fx_p[ind_pattern_seqs, class2_ind].reshape((-1,))
@@ -201,7 +232,9 @@ def SubtractDifferentialExpectedPatternEffect(
             num = np.mean(
                 [fx_p[ind_pattern_seqs, ind] for ind in class2_ind], axis=0
             ).reshape((-1,))
-            denom = np.mean([fx[:, ind] for ind in class2_ind], axis=0).reshape((-1,))
+            denom = np.mean(
+                [fx[:, ind] for ind in class2_ind], axis=0
+            ).reshape((-1,))
         fc2 = num / denom
         stat, pval = wilcoxon(fc1, fc2)
 
@@ -225,11 +258,16 @@ def SubtractDifferentialExpectedPatternEffect(
         },
     )
 
-def SubtractExpectedPatternEffect(predict_function, class_ind, X_p, X, seqsets):
+
+def SubtractExpectedPatternEffect(
+        predict_function, class_ind, X_p, X, seqsets
+):
     fx_p = predict_function(X_p)
     fx = predict_function(X)
     patternseqs = np.array([s.split("_EPEDistribution")[0] for s in seqsets])
-    patterns = list(sorted(set([s.split("_EPEDistribution")[0] for s in seqsets])))
+    patterns = list(
+        sorted(set([s.split("_EPEDistribution")[0] for s in seqsets]))
+    )
     stats = []
     pvals = []
     ratio_pvals = []
@@ -244,7 +282,9 @@ def SubtractExpectedPatternEffect(predict_function, class_ind, X_p, X, seqsets):
             num = np.mean(
                 [fx_p[ind_pattern_seqs, ind] for ind in class_ind], axis=0
             ).reshape((-1,))
-            denom = np.mean([fx[:, ind] for ind in class_ind], axis=0).reshape((-1,))
+            denom = np.mean(
+                [fx[:, ind] for ind in class_ind], axis=0
+            ).reshape((-1,))
         fc = num - denom
         ratio_pvals.append(rank_ratio_statistic(num, denom))
         stat, pval = wilcoxon(num, denom)
@@ -266,4 +306,3 @@ def SubtractExpectedPatternEffect(predict_function, class_ind, X_p, X, seqsets):
             "WilcoxonSignificanceAdj": adj_pvals,
         },
     )
-
