@@ -1,6 +1,9 @@
 # DeepAccessTransfer
-## Data
-The pretrained DeepAccess model used in the paper and executable versions of DeepAccess training and interpretation can be downloaded [here](https://zenodo.org/record/4495606/).
+
+This is the code for transfer learning and interpretation using a pre-trained DeepAccess model. Instructions for downloading and getting started with the current release are available at [https://cgs.csail.mit.edu/DeepAccessTransfer/](https://cgs.csail.mit.edu/DeepAccessTransfer/). Instructions below are for developers only. 
+
+## Getting Started
+To obtain necessary supporting data files of pre-trained DeepAccess models, you must download the full release [here](https://zenodo.org/record/4495606/). 
 
 ## Dependencies
 * [Conda](https://docs.conda.io/en/latest/) (v4.9.2)
@@ -18,11 +21,6 @@ Install and activate a Conda environment with all necessary Python dependencies 
 ```
 conda env create -f env/deepaccesstf2.yml
 source activate deepaccesstf2
-```
-## Example
-We include an example of training and interpreting a new DeepAccess model to predict ASCL1 and CTCF binding events from both genomic regions and genomic sequences and interpret the results:
-```
-sh run_ASCL1vsCTCF_DeepAccess.sh
 ```
 
 ## Training
