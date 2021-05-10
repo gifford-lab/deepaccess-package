@@ -282,7 +282,6 @@ train_pred = DAModel.predict(trainX)
 test_pred = DAModel.predict(testX)
 np.savetxt(opts.out + "/train_predictions.txt", train_pred)
 np.savetxt(opts.out + "/test_predictions.txt", test_pred)
-print(trainY.shape, train_pred.shape)
 metric = average_precision_score
 with open(opts.out + "/performance.txt", "w") as f:
     f.write("Train performance: " + str(metric(trainY, train_pred)) + "\n")
