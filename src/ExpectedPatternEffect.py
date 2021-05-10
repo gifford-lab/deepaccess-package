@@ -3,7 +3,7 @@ import numpy as np
 from ensemble_utils import *
 
 
-def motif2test(motiffile, backgroundfile):
+def motif2test(motiffile, backgroundfile, p=None):
     motifs = open(motiffile).read().split(">")[1:]
     motifmats = {}
     for motif in motifs:
@@ -20,7 +20,10 @@ def motif2test(motiffile, backgroundfile):
     for motifname in motifmats.keys():
         motif = motifmats[motifname]
         backgrounds = fa_to_onehot(backgroundfile)
-        start = int(backgrounds.shape[1] / 2 - motif.shape[0] / 2)
+        if p is None:
+            start = int(backgrounds.shape[1] / 2 - motif.shape[0] / 2)
+        else:
+            start = p
         for bi in range(backgrounds.shape[0]):
             for pos in range(motif.shape[0]):
                 consensus_char = np.argmax(motif[pos, :])
@@ -37,7 +40,7 @@ def motif2test(motiffile, backgroundfile):
         )
 
 
-def fasta2test(fastafile, backgroundfile):
+def fasta2test(fastafile, backgroundfile, p=None):
     fastanames = [f.split("\n")[0]
                   for f in open(fastafile).read().split(">")[1:]]
     fastas = fa_to_onehot(fastafile, make_uniform_length=False)
@@ -46,7 +49,10 @@ def fasta2test(fastafile, backgroundfile):
     for fi, fastaname in enumerate(fastanames):
         fasta = fastas[fi]
         backgrounds = fa_to_onehot(backgroundfile)
-        start = int(backgrounds.shape[1] / 2 - fasta.shape[0] / 2)
+        if p is None:
+            start = int(backgrounds.shape[1] / 2 - fasta.shape[0] / 2)
+        else:
+            start = p
         for bi in range(backgrounds.shape[0]):
             for pos in range(fasta.shape[0]):
                 # if fasta is not N replace background,

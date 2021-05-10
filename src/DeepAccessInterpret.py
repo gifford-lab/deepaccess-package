@@ -34,6 +34,9 @@ parser.add_argument(
     "-evalPatterns", "--evalPatterns", default=None, required=False
 )
 parser.add_argument(
+    '-p','--position',default=None, required=False, type=int
+)
+parser.add_argument(
     "-saliency", "--saliency", default=False, action="store_true"
 )
 parser.add_argument(
@@ -137,7 +140,9 @@ if opts.evalMotifs is not None:
     print("----------------------------------------")
     print("Performing Differential Motif Evaluation")
     print("----------------------------------------")
-    X, X_bg, seqsamples = motif2test(opts.evalMotifs, opts.background)
+    X, X_bg, seqsamples = motif2test(
+        opts.evalMotifs, opts.background, opts.position
+    )
 
     comps = [
         (comp.strip().split("vs")[0].split(","),
@@ -199,7 +204,9 @@ if opts.evalPatterns != None:
     print("----------------------------------------")
     print("Performing Differential Motif Evaluation")
     print("----------------------------------------")
-    X, X_bg, seqsamples = fasta2test(opts.evalPatterns, opts.background)
+    X, X_bg, seqsamples = fasta2test(
+        opts.evalPatterns, opts.background, opts.position
+    )
 
     comps = [
         (comp.strip().split("vs")[0].split(","),

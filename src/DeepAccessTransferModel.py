@@ -86,9 +86,12 @@ class DeepAccessTransferModel:
             cnn = keras.models.load_model(model + "/model.h5")
             # add up to last layer
             new_cnn = Sequential()
-            for layer in cnn.layers[:-1]:
+            for i, layer in enumerate(cnn.layers[:-1]):
+                if i < 2: # first two layers not trainable
+                    print(layer)
+                    layer.trainable=False
                 new_cnn.add(layer)
-                # add new layer with new output
+            # add new layer with new output
             new_cnn.add(Dense(y.shape[1], activation="sigmoid"))
             adam = optimizers.Adam(
                 lr=1e-4, clipnorm=0.5, decay=(1e-4 / 100.0)

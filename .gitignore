@@ -9,10 +9,12 @@ dist/
 distribution_analysis/
 encode_chip_analysis/
 endoderm_development/
+default/DeepAccessMultiMouse
 oct_sox_chip/
 other_data/
 plots/
 results/
+data/*.narrowPeak
 run_ChIP_DeepAccess.sh
 run_MIAA_endoderm.sh
 run_test_distributions.sh
@@ -27,3 +29,9 @@ vis/
 .keras/
 MIAA_consensus.fa
 __pycache__/
+log
+position_analysis
+run_new_deepaccess.sh
+run_test_position.sh
+homer_matrix.npy
+old_test
