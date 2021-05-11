@@ -21,7 +21,10 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
+    package_dir={"deepaccess": "deepaccess"},
+    packages=setuptools.find_packages(),
     python_requires=">=3.6",
+    entry_points={
+        "console_scripts": ["deepaccess=deepaccess.deepaccess:main"]
+    }
 )

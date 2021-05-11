@@ -1,7 +1,6 @@
 import os
 import numpy as np 
 import argparse
-from DeepAccessModel import *
 import argparse
 import pickle
 import keras
@@ -58,7 +57,7 @@ def create_train_test(bedfile, classes, out, holdout="chr19"):
     np.savetxt(out + "/test.txt", np.array(test_classifications))
     np.savetxt(out + "/train.txt", np.array(train_classifications))
 
-def main():
+def main(args):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-l", "--labels", nargs="+", required=True
@@ -106,7 +105,7 @@ def main():
         required=False,
         help="Print training progress",
     )
-    opts = parser.parse_args()
+    opts = parser.parse_args(args)
 
     ensure_dir(opts.out, exit_if_exists=True)
 
@@ -305,4 +304,7 @@ def main():
         f.write("Train performance: " + str(metric(trainY, train_pred)) + "\n")
     with open(opts.out + "/performance.txt", "a") as f:
         f.write("Test performance: " + str(metric(testY, test_pred)) + "\n")
-    
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv)

@@ -1,13 +1,10 @@
 import os
 import keras
 import pickle
-from ensemble_utils import ensure_dir
 import numpy as np
 from keras.models import load_model, Sequential, Model
 from keras.layers import Dense, Input, Add
 from keras import optimizers
-from importance_utils import saliency
-
 
 class DeepAccessModel:
     def __init__(self, outdir):
@@ -30,10 +27,7 @@ class DeepAccessModel:
 
         acc = [self.accuracies[mp.split("/")[-1]] for mp in self.model_paths]
         acc_norm = np.array(acc) / sum(acc)
-        outputs = [
-            model.outputs[0] * acc_norm[mi]
-            for mi, model in enumerate(new_models)
-        ]
+        outputs = [model.outputs[0] * acc_norm[mi] for mi, model in enumerate(new_models)]
         y = Add()(outputs)
         model = Model(model_input, y, name="DeepAccessEnsemble")
         return model
@@ -104,7 +98,7 @@ class DeepAccessModel:
         accuracies = {}
         self.nclasses = y.shape[1]
         trained_models = []
-        for mi, model in enumerate(models)
+        for mi, model in enumerate(models):
             if filters[mi] != None:
                 new_cnn = CNN(model,
                               X.shape[1:],
