@@ -13,6 +13,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pypa/sampleproject",
+    packages=setuptools.find_packages(),
     project_urls={
         "Bug Tracker": "https://github.com/pypa/sampleproject/issues",
     },
@@ -22,9 +23,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     package_dir={"deepaccess": "deepaccess"},
-    packages=setuptools.find_packages(),
     python_requires=">=3.6",
     entry_points={
         "console_scripts": ["deepaccess=deepaccess.deepaccess:main"]
-    }
+    },
+    include_package_data=True,
+    package_data={'': ['train/homer_matrix.npy']},
 )

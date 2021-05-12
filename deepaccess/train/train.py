@@ -1,13 +1,16 @@
 import os
 import numpy as np 
 import argparse
-import argparse
 import pickle
 import keras
+import subprocess
 from tensorflow.python.client import device_lib
-import os
 import tensorflow as tf
 from numpy.random import seed
+from deepaccess.ensemble_utils import *
+from deepaccess.train.DeepAccessModel import *
+from sklearn.metrics import average_precision_score
+
 # decided by trained network size
 WINDOWSIZE = 100
 

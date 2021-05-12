@@ -5,6 +5,8 @@ import numpy as np
 from keras.models import load_model, Sequential, Model
 from keras.layers import Dense, Input, Add
 from keras import optimizers
+from deepaccess.ensemble_utils import *
+from deepaccess.train.CNN import *
 
 class DeepAccessModel:
     def __init__(self, outdir):
@@ -109,37 +111,18 @@ class DeepAccessModel:
                 new_cnn = CNN(model,
                               X.shape[1:],
                               y.shape[1])
-            adam = optimizers.Adam(
-                lr=1e-4, clipnorm=0.5, decay=(1e-4 / 100.0)
-            )
-            new_cnn.compile(
-                optimizer=adam,
-                loss="binary_crossentropy",
-                metrics=["accuracy"]
-            )
-
-            model_folder = self.outdir + "/" + model.split("/")[-1]
+            
+            history = new_cnn.train(X, y, sample_weights, n_epochs=n_epochs)
+            model_folder = self.outdir + "/" + "_".join(model)+"_"+str(mi)
             ensure_dir(model_folder)
-            callbacks = [
-                keras.callbacks.EarlyStopping(monitor="val_loss", patience=3),
-                keras.callbacks.History(),
-            ]
-            history = new_cnn.fit(
-                x=X,
-                y=y,
-                epochs=n_epochs,
-                shuffle=True,
-                validation_split=0.2,
-                batch_size=250,
-                verbose=verbose,
-                callbacks=callbacks,
-            )
+        
             loss, train_acc = new_cnn.evaluate(
                 X, y, batch_size=250, verbose=verbose
             )
+            
             accuracies[model_folder] = train_acc
             new_cnn.save(model_folder + "/model.h5")
-            retrained_models.append(model_folder)
+            trained_models.append(model_folder)
             np.save(model_folder + "/history.npy", history.history)
             np.save(model_folder + "/sample_weights.npy", sample_weights)
             with open(model_folder + "/model_summary.txt", "w") as f:
@@ -149,9 +132,8 @@ class DeepAccessModel:
             sample_weights += np.linalg.norm(
                 y - new_cnn.predict(X, batch_size=250)
             )
-            del cnn
             del new_cnn
-        self.model_paths = retrained_models
+        self.model_paths = trained_models
         for key in list(accuracies.keys()):
             self.accuracies[key.split("/")[-1]] = accuracies[key]
         self.ensemble = self._make_ensemble()

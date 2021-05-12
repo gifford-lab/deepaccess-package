@@ -11,7 +11,7 @@ from keras.layers import (
     Flatten,
 )
 from keras import optimizers
-
+import pkg_resources
 
 class CNN:
     # CNN code for motif convolutional layer
@@ -28,8 +28,13 @@ class CNN:
         for i, layer in enumerate(model_layers):
             if layer == "conv":
                 if i == 0:
-                    HOMER_motifs = list(np.load("homer_matrix.npy",
-                                                allow_pickle=True))
+                    HOMER_motifs = list(
+                        np.load(
+                            pkg_resources.resource_stream(
+                                __name__,
+                                "homer_matrix.npy"
+                            ),
+                            allow_pickle=True))
                     conv_layer = Conv1D(
                         input_shape=seq_shape,
                         filters=len(HOMER_motifs) * 2,
@@ -108,11 +113,19 @@ class CNN:
         )
         return history
 
+    def evaluate(self, X, y, batch_size, verbose):
+        return self.model.evaluate(
+            X, y, batch_size, verbose
+        )
+
+    def to_yaml(self):
+        return self.model.to_yaml()
+        
     def save(self, h5file):
         self.model.save(h5file)
 
-    def predict(self, X):
-        return self.model.predict(X)
+    def predict(self, X, batch_size=100):
+        return self.model.predict(X, batch_size)
 
     def error(self, X, y):
         return np.linalg.norm(y - self.model.predict(X))
