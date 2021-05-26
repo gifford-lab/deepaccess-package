@@ -14,11 +14,11 @@ export PATH="/path/to/bedtools:$PATH"
 ```
 
 ## Installation
-Ultimately, seqgra will be available on the Python Package Index (PyPI) and can be installed with pip:
+Ultimately, deepaccess will be available on the Python Package Index (PyPI) and can be installed with pip:
 ```
 pip install deepaccess
 ```
-For now, install seqgra from this repository directly:
+For now, install deepaccess from this repository directly:
 ```
 git clone https://github.com/gifford-lab/deepaccess-package.git
 cd deepaccess-package
