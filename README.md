@@ -1,12 +1,9 @@
-# DeepAccessTransfer
+# deepaccess-package
 
-This is the code for transfer learning and interpretation using a pre-trained DeepAccess model. Instructions for downloading and getting started with the current release are available at [https://cgs.csail.mit.edu/DeepAccessTransfer/](https://cgs.csail.mit.edu/DeepAccessTransfer/). Instructions below are for developers only. 
-
-## Getting Started
-To obtain necessary supporting data files of pre-trained DeepAccess models, you must download the full release [here](https://zenodo.org/record/4495606/). 
+This is the code for training and interpretation of an ensemble of convolutional neural networks for multi-task classification. Instructions for downloading and getting started with the current release are available at [https://cgs.csail.mit.edu/deepaccess-package/](https://cgs.csail.mit/deepaccess-package/). deepaccess is available via [pip](https://pypi.org/project/pip/) and [bioconda](https://bioconda.github.io/).
 
 ## Dependencies
-* [Conda](https://docs.conda.io/en/latest/) (v4.9.2)
+* [conda](https://docs.conda.io/en/latest/) (v4.9.2)
 * [bedtools](https://bedtools.readthedocs.io/en/latest/) (v2.29.2)
 
 To run DeepAccess with regions (bedfile format) you must install bedtools and add it to your path. Bedtools binaries are available [here](https://github.com/arq5x/bedtools2/releases).
@@ -16,23 +13,28 @@ After installation, you can add bedtools to your path via the terminal or modify
 export PATH="/path/to/bedtools:$PATH"
 ```
 
-## Environment setup
-Install and activate a Conda environment with all necessary Python dependencies by:
+## Installation
+Ultimately, seqgra will be available on the Python Package Index (PyPI) and can be installed with pip:
 ```
-conda env create -f env/deepaccesstf2.yml
-source activate deepaccesstf2
+pip install deepaccess
+```
+For now, install seqgra from this repository directly:
+```
+git clone https://github.com/gifford-lab/deepaccess-package.git
+cd deepaccess-package
+pip install . 
 ```
 
 ## Training
 To train a DeepAccess model for a new task
 ```
-usage: python DeepAccessTrainTransfer.py [-h] 
-                               -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
-                               [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
-                               [-fa FASTA] [-fasta_labels FASTA_LABELS]
-                               [-f FRAC_RANDOM] [-bg BG]
-                               [-nepochs NEPOCHS] [-model MODEL] [-ho HOLDOUT]
-                               [-verbose]
+usage: deepaccess train [-h]
+       		  	-l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
+                        [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
+                        [-fa FASTA] [-fasta_labels FASTA_LABELS]
+                        [-f FRAC_RANDOM] [-bg BG]
+                        [-nepochs NEPOCHS] [-model MODEL] [-ho HOLDOUT]
+                        [-verbose]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -73,7 +75,7 @@ optional arguments:
 ## Interpretation
 To run interpretation of a DeepAccess model
 ```
-usage: python DeepAccessInterpret.py [-h] -trainDir TRAINDIR
+usage: deepaccess interpret [-h] -trainDir TRAINDIR
                            [-fastas FASTAS [FASTAS ...]]
                            [-l LABELS [LABELS ...]]
                            [-comparisons COMPARISONS [COMPARISONS ...]]

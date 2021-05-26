@@ -35,3 +35,4 @@ run_new_deepaccess.sh
 run_test_position.sh
 homer_matrix.npy
 old_test
+src/deepaccess.egg-info/
