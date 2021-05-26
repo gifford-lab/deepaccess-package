@@ -1,6 +1,5 @@
 from scipy.stats import wilcoxon, norm
 import numpy as np
-from ensemble_utils import *
 
 
 def motif2test(motiffile, backgroundfile, p=None):
