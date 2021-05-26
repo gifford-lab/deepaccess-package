@@ -8,11 +8,16 @@ After installation, you can add bedtools to your path via the terminal or modify
 export PATH="/path/to/bedtools:$PATH"
 ```
 
-After installing bedtools, you can install DeepAccessTransfer by downloading the tarball containing the executable with supporting data and files.
+DeepAccess can be installed as a command line tool with pip:
+```markdown
+git clone https://github.com/gifford-lab/deepaccess-package.git
+cd deepaccess-package
+pip install . 
+```
 
 We provide an example of how to run training and interpretation of DeepAccess in the shell script 
 ```markdown
-sh run_ASCL1vsCTCF_DeepAccessExec.sh 
+sh run_ASCL1vsCTCF_DeepAccess.sh 
 ```
 ## Citation
 [Discovering differential genome sequence activity with interpretable and efficient deep learning](https://www.biorxiv.org/content/10.1101/2021.02.26.433073v1.abstract?%3Fcollection=) <br />  by Jennifer Hammelman and David K. Gifford
@@ -30,7 +35,7 @@ We provide support to train a DeepAccess model with either bed files or fasta fi
 
 ### Usage
 ```markdown
-usage: dist/DeepAccessTrainTransfer [-h] 
+usage: deepaccess train [-h] 
             -l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
            [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
            [-fa FASTA] [-fasta_labels FASTA_LABELS]
@@ -88,7 +93,7 @@ Per-nucleotide importance is run using an input of one or more fastas and return
 
 ### Usage
 ```markdown
-usage: dist/DeepAccessInterpret [-h] -trainDir TRAINDIR
+usage: deepaccess interpret [-h] -trainDir TRAINDIR
                 [-fastas FASTAS [FASTAS ...]]
                 [-l LABELS [LABELS ...]]
                 [-comparisons COMPARISONS [COMPARISONS ...]]
