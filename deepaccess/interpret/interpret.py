@@ -9,6 +9,7 @@ import subprocess
 import argparse
 import sys
 import matplotlib.pyplot as plt
+from deepaccess.train.DeepAccessModel import *
 
 def main(args):
     parser = argparse.ArgumentParser()
