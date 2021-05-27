@@ -3,7 +3,7 @@ import numpy as np
 
 
 def motif2test(motiffile, backgroundfile, p=None):
-   motifs = open(motiffile).read().split(">")[1:]
+    motifs = open(motiffile).read().split(">")[1:]
     motifmats = {}
     for motif in motifs:
         motifname = motif.strip().split("\n")[0]
