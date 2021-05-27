@@ -10,6 +10,7 @@ import argparse
 import sys
 import matplotlib.pyplot as plt
 from deepaccess.train.DeepAccessModel import *
+from deepaccess.interpret.ExpectedPatternEffect import *
 
 def main(args):
     parser = argparse.ArgumentParser()
