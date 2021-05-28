@@ -43,13 +43,17 @@ def main(args):
         "-subtract", "--subtract", default=False, action="store_true"
     )
     parser.add_argument(
-        "-bg", "--background", default="default/backgrounds.fa", required=False
+        "-bg", "--background", default="default", required=False
     )
     parser.add_argument(
         "-vis", "--makeVis", action="store_true", default=False, required=False
     )
     opts = parser.parse_args(args)
 
+    if opts.background == 'default':
+        opts.background = pkg_resources.resource_stream(__name__,
+                                                        "backgrounds.fa")
+    
     print("-------------------------------------")
     print("         Making Predictions          ")
     print("-------------------------------------")

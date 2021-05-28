@@ -88,13 +88,7 @@ def main(args):
         "-f", "--frac_random", required=False, default=0.1, type=float
     )
     parser.add_argument(
-        "-bg", "--bg", default="default/backgrounds.fa", required=False
-    )
-    parser.add_argument(
         "-nepochs", "--nepochs", default=5, type=int, required=False
-    )
-    parser.add_argument(
-        "-model", "--model", default="default/DeepAccessMultiMouse", required=False
     )
     parser.add_argument(
         "-ho", "--holdout", default="chr19", required=False,
