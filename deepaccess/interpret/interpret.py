@@ -55,7 +55,7 @@ def main(args):
                                                           "../data/backgrounds.fa")
     elif not os.path.exists(opts.background):
         opts.background = pkg_resources.resource_filename(__name__,
-                                                          "../data/"+name)
+                                                          "../data/"+opts.background)
         
     print("-------------------------------------")
     print("         Making Predictions          ")
