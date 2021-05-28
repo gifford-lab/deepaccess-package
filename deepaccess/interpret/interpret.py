@@ -50,9 +50,9 @@ def main(args):
     )
     opts = parser.parse_args(args)
 
-    if opts.background == 'default':
+    if opts.background == "default":
         opts.background = pkg_resources.resource_stream(__name__,
-                                                        "backgrounds.fa")
+                                                        "../data/backgrounds.fa")
     
     print("-------------------------------------")
     print("         Making Predictions          ")
