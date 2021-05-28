@@ -11,7 +11,7 @@ import sys
 import matplotlib.pyplot as plt
 from deepaccess.train.DeepAccessModel import *
 from deepaccess.interpret.ExpectedPatternEffect import *
-from deepaccess.interpret.importance_utils import saliency
+from deepaccess.interpret.importance_utils import *
 
 def main(args):
     parser = argparse.ArgumentParser()

@@ -1,6 +1,6 @@
 from scipy.stats import wilcoxon, norm
 import numpy as np
-
+from deepaccess.ensemble_utils import *
 
 def motif2test(motiffile, backgroundfile, p=None):
     motifs = open(motiffile).read().split(">")[1:]

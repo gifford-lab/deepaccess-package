@@ -7,6 +7,7 @@ from keras.layers import Dense, Input, Add
 from keras import optimizers
 from deepaccess.ensemble_utils import *
 from deepaccess.train.CNN import *
+from deepaccess.interpret.importance_utils import saliency
 
 class DeepAccessModel:
     def __init__(self, outdir):
