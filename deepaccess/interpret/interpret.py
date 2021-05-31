@@ -52,10 +52,10 @@ def main(args):
 
     if opts.background == "default":
         opts.background = pkg_resources.resource_filename(__name__,
-                                                          "../data/backgrounds.fa")
+                                                          "data/backgrounds.fa")
     elif not os.path.exists(opts.background):
         opts.background = pkg_resources.resource_filename(__name__,
-                                                          "../data/"+opts.background)
+                                                          "data/"+opts.background)
         
     print("-------------------------------------")
     print("         Making Predictions          ")
@@ -143,6 +143,8 @@ def main(args):
                 np.savetxt(opts.trainDir + "/" + fname + ".prediction", DA_fa_pred)
 
     if opts.evalMotifs is not None:
+        if opts.evalMotifs == "HMv11_MOUSE":
+            opts.evalMotifs = 'data/HMv11_MOUSE.txt'
         motifDB = opts.evalMotifs.split("/")[-1].split(".txt")[0]
         print("----------------------------------------")
         print("Performing Differential Motif Evaluation")
