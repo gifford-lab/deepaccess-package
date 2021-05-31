@@ -28,6 +28,6 @@ setuptools.setup(
         "console_scripts": ["deepaccess=deepaccess.deepaccess:main"]
     },
     include_package_data=True,
-    package_data={'': ['train/homer_matrix.npy',
-                       '':['interpret/data/']]},
+    package_data={'': ['train/homer_matrix.npy'],
+                  '':['interpret/data/']},
 )

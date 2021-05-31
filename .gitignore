@@ -33,6 +33,6 @@ log
 position_analysis
 run_new_deepaccess.sh
 run_test_position.sh
-homer_matrix.npy
 old_test
 src/deepaccess.egg-info/
+run_ChIP_DeepAccess_new.sh
