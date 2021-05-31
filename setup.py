@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="deepaccess", 
-    version="0.0.1",
+    version="0.0.10",
     author="Jennifer Hammelman",
     author_email="jhammelm@mit.edu",
     description="A package for training and interpreting an "
@@ -28,5 +28,6 @@ setuptools.setup(
         "console_scripts": ["deepaccess=deepaccess.deepaccess:main"]
     },
     include_package_data=True,
-    package_data={'': ['train/homer_matrix.npy']},
+    package_data={'': ['train/homer_matrix.npy',
+                       '':['interpret/data/']]},
 )
