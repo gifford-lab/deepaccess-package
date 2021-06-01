@@ -29,5 +29,5 @@ setuptools.setup(
     },
     include_package_data=True,
     package_data={'': ['train/homer_matrix.npy'],
-                  '':['interpret/data/']},
+                  '':['interpret/data/*']},
 )
