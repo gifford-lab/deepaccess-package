@@ -1,7 +1,7 @@
 ---
-title: DeepAccess Package
+title: Home
 layout: default
-filename: index.md
+filename: index
 ---
 ## DeepAccess
 We provide a code base for training and interpreting deep learning models for predicting cell type-specific accessibility.

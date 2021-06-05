@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 layout: default
-filename: quick-start.md
+filename: quick-start
 ---
 ## Quick Start
 

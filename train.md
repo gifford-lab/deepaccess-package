@@ -1,7 +1,7 @@
 ---
 title: Training
 layout: default
-filename: train.md
+filename: train
 ---
 ## Training
 

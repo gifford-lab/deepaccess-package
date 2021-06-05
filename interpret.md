@@ -1,7 +1,7 @@
 ---
 title: Interpretation
 layout: default
-filename: interpret.md
+filename: interpret
 ---
 ## Interpretation
 We provide two methods of interpretation of trained DeepAccess models: 

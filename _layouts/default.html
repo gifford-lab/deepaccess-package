@@ -38,7 +38,7 @@
         </ul>
         {% endif %}
 	{% for page in site.pages %}
-	    <p><a href="{{ "/" | page.filename }}">{{ page.title }}</a></p>
+	    <p><a href={{ page.filename }}>{{ page.title }}</a></p>
 	{% endfor %}
       </header>
       <section>
