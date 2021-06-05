@@ -94,7 +94,7 @@ def main(args):
         "-ho", "--holdout", default="chr19", required=False,
         help="chromosome to holdout"
     )
-    parser.add_arugment(
+    parser.add_argument(
         "-seed", "--seed", default=2021, type=int, required=False
     )
     parser.add_argument(

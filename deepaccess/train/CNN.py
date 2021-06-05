@@ -87,7 +87,7 @@ class CNN:
         model.add(Dropout(0.1))
         model.add(Dense(out_shape, activation="sigmoid"))
 
-        adam = optimizers.Adam(lr=1e-4,
+        adam = optimizers.Adam(learning_rate=1e-4,
                                clipnorm=0.5,
                                decay=(1e-4 / 100.0))
         model.compile(optimizer=adam,
