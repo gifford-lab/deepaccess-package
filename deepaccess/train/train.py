@@ -94,6 +94,9 @@ def main(args):
         "-ho", "--holdout", default="chr19", required=False,
         help="chromosome to holdout"
     )
+    parser.add_arugment(
+        "-seed", "--seed", default=2021, type=int, required=False
+    )
     parser.add_argument(
         "-verbose",
         "--verbose",
@@ -106,6 +109,8 @@ def main(args):
 
     ensure_dir(opts.out, exit_if_exists=True)
 
+    tf.random.set_seed(opts.seed)
+    
     if opts.fasta is None:
         assert opts.refFasta is not None
         assert opts.genome is not None
