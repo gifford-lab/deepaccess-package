@@ -37,9 +37,9 @@
           <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
         </ul>
         {% endif %}
-	<p><a href="{{ site.github.quickstart }}" class="btn">Quick Start</a></p>
-	<p><a href="{{ site.github.train }}" class="btn">Train</a></p>
-	<p><a href="{{ site.github.interpret }}" class="btn">Interpret</a></p>
+	{% for page in site.pages %}
+	<a href={{ page.filename }}>{{ page.title }}</a>
+	{% endfor %}
       </header>
       <section>
 

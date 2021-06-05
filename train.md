@@ -1,3 +1,8 @@
+---
+title: Training
+layout: default
+filename: train.md
+---
 ## Training
 
 We provide support to train a DeepAccess model with either bed files or fasta files (and labels) as input. For training from bed files, you will also need to download a reference genome and chrom.sizes file, which are available on UCSC:

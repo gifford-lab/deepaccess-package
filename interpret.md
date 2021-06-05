@@ -1,3 +1,8 @@
+---
+title: Interpretation
+layout: default
+filename: interpret.md
+---
 ## Interpretation
 We provide two methods of interpretation of trained DeepAccess models: 
 1. ExpectedPatternEffect and DifferentialExpectedPatternEffect

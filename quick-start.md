@@ -1,3 +1,8 @@
+---
+title: Quick Start
+layout: default
+filename: quick-start.md
+---
 ## Quick Start
 
 These are instructions for how to run the packaged version of DeepAccess training and interpretation. We provide a tutorial for running DeepAccess training and interpretation as a [google colab notebook](https://colab.research.google.com/drive/14q8-qO93-S4SkIwKJaC5WOSJSEQ8OZYI?usp=sharing). 
