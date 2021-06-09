@@ -17,8 +17,8 @@ DeepAccess can be installed as a command line tool with pip:
 ```markdown
 pip install deepaccess==0.1.0
 ```
-
-We provide an example of how to run training and interpretation of DeepAccess as a shell script 
+or with bioconda:
 ```markdown
-sh run_ASCL1vsCTCF_DeepAccess.sh 
+conda install -c bioconda deepaccess 
 ```
+
