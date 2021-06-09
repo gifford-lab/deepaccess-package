@@ -15,12 +15,10 @@ export PATH="/path/to/bedtools:$PATH"
 
 DeepAccess can be installed as a command line tool with pip:
 ```markdown
-git clone https://github.com/gifford-lab/deepaccess-package.git
-cd deepaccess-package
-pip install . 
+pip install deepaccess==0.1.0
 ```
 
-We provide an example of how to run training and interpretation of DeepAccess in the shell script 
+We provide an example of how to run training and interpretation of DeepAccess as a shell script 
 ```markdown
 sh run_ASCL1vsCTCF_DeepAccess.sh 
 ```
