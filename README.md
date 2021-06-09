@@ -1,9 +1,10 @@
 # deepaccess-package
+[![Documentation Status](https://readthedocs.org/projects/deeptools/badge/)](http://deeptools.readthedocs.org/) [![PyPI version](https://badge.fury.io/py/deepaccess.svg)](https://badge.fury.io/py/deepaccess)](https://pypi.org/project/deepaccess/)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/deepaccess/badges/installer/conda.svg)](https://conda.anaconda.org/bioconda)
 
 This is the code for training and interpretation of an ensemble of convolutional neural networks for multi-task classification. Instructions for downloading and getting started with the current release are available at [https://cgs.csail.mit.edu/deepaccess-package/](https://cgs.csail.mit/deepaccess-package/). deepaccess is available via [pip](https://pypi.org/project/pip/) and [bioconda](https://bioconda.github.io/).
 
 ## Dependencies
-* [conda](https://docs.conda.io/en/latest/) (v4.9.2)
 * [bedtools](https://bedtools.readthedocs.io/en/latest/) (v2.29.2)
 
 To run DeepAccess with regions (bedfile format) you must install bedtools and add it to your path. Bedtools binaries are available [here](https://github.com/arq5x/bedtools2/releases).
@@ -14,15 +15,13 @@ export PATH="/path/to/bedtools:$PATH"
 ```
 
 ## Installation
-Ultimately, deepaccess will be available on the Python Package Index (PyPI) and can be installed with pip:
+deepaccess is available on the Python Package Index (PyPI) and can be installed with pip:
 ```
 pip install deepaccess
 ```
-For now, install deepaccess from this repository directly:
+and via bioconda:
 ```
-git clone https://github.com/gifford-lab/deepaccess-package.git
-cd deepaccess-package
-pip install . 
+conda install -c bioconda deepaccess
 ```
 
 ## Training
