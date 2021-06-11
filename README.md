@@ -27,8 +27,8 @@ conda install -c bioconda deepaccess
 ## Training
 To train a DeepAccess model for a new task
 ```
-usage: deepaccess [-h] -l
-       		  LABELS [LABELS ...] -out OUT [-ref REFFASTA]
+usage: deepaccess train [-h] -l LABELS [LABELS ...]
+       		  -out OUT [-ref REFFASTA]
 		  [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
 		  [-fa FASTA] [-fasta_labels FASTA_LABELS]
                   [-f FRAC_RANDOM] [-nepochs NEPOCHS]
@@ -71,7 +71,7 @@ optional arguments:
 ## Interpretation
 To run interpretation of a DeepAccess model
 ```
-usage: deepaccess [-h] -trainDir TRAINDIR
+usage: deepaccess interpret [-h] -trainDir TRAINDIR
        		  [-fastas FASTAS [FASTAS ...]]
 		  [-l LABELS [LABELS ...]] [
 		  -c COMPARISONS [COMPARISONS ...]]
