@@ -41,6 +41,7 @@ optional arguments:
   -verbose, --verbose   Print training progress
 ```
 ### Arguments
+
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |

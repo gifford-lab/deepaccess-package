@@ -39,7 +39,8 @@ optional arguments:
   -bg BACKGROUND, --background BACKGROUND
   -vis, --makeVis
 ```
-### Arguments 
+### Arguments
+
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
 | -h, --help | show this help message and exit | NA |
