@@ -15,7 +15,7 @@ export PATH="/path/to/bedtools:$PATH"
 
 DeepAccess can be installed as a command line tool with pip:
 ```markdown
-pip install deepaccess==0.1.0
+pip install deepaccess==0.1.1
 ```
 or with bioconda:
 ```markdown

@@ -1,5 +1,5 @@
 theme: jekyll-theme-minimal
 show_downloads: true
 github:
-  zip_url: https://zenodo.org/record/4495606/files/DeepAccessTransfer.zip?download=1
-  tar_url: https://zenodo.org/record/4495606/files/DeepAccessTransfer.tar.gz?download=1
+  zip_url: https://github.com/gifford-lab/deepaccess-package/releases/download/v0.1.1/deepaccess-release-0.1.1.zip
+  tar_url: https://github.com/gifford-lab/deepaccess-package/releases/download/v0.1.1/deepaccess-release-0.1.1.tar.gz
