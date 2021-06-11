@@ -27,13 +27,12 @@ conda install -c bioconda deepaccess
 ## Training
 To train a DeepAccess model for a new task
 ```
-usage: deepaccess train [-h]
-       		  	-l LABELS [LABELS ...] -out OUT [-ref REFFASTA]
-                        [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
-                        [-fa FASTA] [-fasta_labels FASTA_LABELS]
-                        [-f FRAC_RANDOM] [-bg BG]
-                        [-nepochs NEPOCHS] [-model MODEL] [-ho HOLDOUT]
-                        [-verbose]
+usage: deepaccess [-h] -l
+       		  LABELS [LABELS ...] -out OUT [-ref REFFASTA]
+		  [-g GENOME] [-beds BEDFILES [BEDFILES ...]]
+		  [-fa FASTA] [-fasta_labels FASTA_LABELS]
+                  [-f FRAC_RANDOM] [-nepochs NEPOCHS]
+		  [-ho HOLDOUT] [-seed SEED] [-verbose]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -41,16 +40,15 @@ optional arguments:
   -out OUT, --out OUT
   -ref REFFASTA, --refFasta REFFASTA
   -g GENOME, --genome GENOME
-                        chrom.sizes file
+                        genome chrom.sizes file
   -beds BEDFILES [BEDFILES ...], --bedfiles BEDFILES [BEDFILES ...]
   -fa FASTA, --fasta FASTA
   -fasta_labels FASTA_LABELS, --fasta_labels FASTA_LABELS
   -f FRAC_RANDOM, --frac_random FRAC_RANDOM
-  -bg BG, --bg BG
   -nepochs NEPOCHS, --nepochs NEPOCHS
-  -model MODEL, --model MODEL
   -ho HOLDOUT, --holdout HOLDOUT
                         chromosome to holdout
+  -seed SEED, --seed SEED
   -verbose, --verbose   Print training progress
 ```
 ### Arguments
@@ -65,22 +63,22 @@ optional arguments:
 | -fa --fasta | fasta file;  one of beds or fa input required | C1C2C3.fa |
 | -fasta_labels --fasta_labels | text file containing tab delimited labels (0 or 1) for each fasta line with one column for each class | C1C2C3.txt |
 | -f  --frac_random | for bed file input fraction of random outgroup regions to add to training | 0.1 |
-| -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
 | -nepochs --nepochs | number of training iterations | 1 |
-| -model --model | folder containing base model to begin training | default/DeepAccessMultiMouse |
 | -ho --holdout | chromosome name to hold out (only with bed input) | chr19 |
 | -verbose --verbose | print training and evaluation progress | NA |
+| -seed --seed | set tensorflow seed | 2021 |
 
 ## Interpretation
 To run interpretation of a DeepAccess model
 ```
-usage: deepaccess interpret [-h] -trainDir TRAINDIR
-                           [-fastas FASTAS [FASTAS ...]]
-                           [-l LABELS [LABELS ...]]
-                           [-comparisons COMPARISONS [COMPARISONS ...]]
-                           [-evalMotifs EVALMOTIFS]
-                           [-evalPatterns EVALPATTERNS] [-saliency]
-                           [-bg BACKGROUND] [-vis]
+usage: deepaccess [-h] -trainDir TRAINDIR
+       		  [-fastas FASTAS [FASTAS ...]]
+		  [-l LABELS [LABELS ...]] [
+		  -c COMPARISONS [COMPARISONS ...]]
+		  [-evalMotifs EVALMOTIFS]
+                  [-evalPatterns EVALPATTERNS]
+		  [-p POSITION] [-saliency]
+		  [-subtract] [-bg BACKGROUND] [-vis]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -90,7 +88,9 @@ optional arguments:
   -c COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
   -evalMotifs EVALMOTIFS, --evalMotifs EVALMOTIFS
   -evalPatterns EVALPATTERNS, --evalPatterns EVALPATTERNS
+  -p POSITION, --position POSITION
   -saliency, --saliency
+  -subtract, --subtract
   -bg BACKGROUND, --background BACKGROUND
   -vis, --makeVis
 ```
@@ -106,4 +106,5 @@ optional arguments:
 | -evalPatterns --evalPatterns | fasta file containing DNA sequence patterns | data/ASCL1_space.fa |
 | -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
 | -saliency --saliency | calculate per base nucleotide importance | NA |
+| -subtract --subtract | use subtraction instead of ratio for EPE / DEPE | False |
 | -vis --makeVis | to be used with saliency to make plot visualizing results | NA |
