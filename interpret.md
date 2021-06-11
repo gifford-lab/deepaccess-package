@@ -17,12 +17,13 @@ Per-nucleotide importance is run using an input of one or more fastas and return
 ### Usage
 ```markdown
 usage: deepaccess interpret [-h] -trainDir TRAINDIR
-                [-fastas FASTAS [FASTAS ...]]
-                [-l LABELS [LABELS ...]]
-                [-comparisons COMPARISONS [COMPARISONS ...]]
-                [-evalMotifs EVALMOTIFS]
-                [-evalPatterns EVALPATTERNS] [-saliency]
-                [-bg BACKGROUND] [-vis]
+       		  [-fastas FASTAS [FASTAS ...]]
+		  [-l LABELS [LABELS ...]] [
+		  -c COMPARISONS [COMPARISONS ...]]
+		  [-evalMotifs EVALMOTIFS]
+                  [-evalPatterns EVALPATTERNS]
+		  [-p POSITION] [-saliency]
+		  [-subtract] [-bg BACKGROUND] [-vis]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -32,21 +33,23 @@ optional arguments:
   -c COMPARISONS [COMPARISONS ...], --comparisons COMPARISONS [COMPARISONS ...]
   -evalMotifs EVALMOTIFS, --evalMotifs EVALMOTIFS
   -evalPatterns EVALPATTERNS, --evalPatterns EVALPATTERNS
+  -p POSITION, --position POSITION
   -saliency, --saliency
+  -subtract, --subtract
   -bg BACKGROUND, --background BACKGROUND
   -vis, --makeVis
 ```
 ### Arguments 
-
 | Argument   | Description | Example |
 | ---------  | ----------- | -------- |
-| -h  | show this help message and exit | NA |
-| -trainDir  | directory containing trained DeepAccess model | test/ASCL1vsCTCF |
-| -fastas | list of fasta files to evaulate | test/ASCL1vsCTCF/test.fa |
-| -l | list of labels for each bed file | C1 C2 C3 |
-| -c  | list of comparisons between different labels | ASCL1vsCTCF ASCL1vsNone runs differential EPE between ASCL1 and CTCF and EPE on ASCL1; C1,C2vsC3 runs differential EPE for (C1 and C2) vs C3 |
-| -evalMotifs  | PWM or PCM data base of DNA sequence motifs | default/HMv11_MOUSE.txt |
-| -evalPatterns  | fasta file containing DNA sequence patterns | data/ASCL1_space.fa |
-| -bg | fasta file containning background sequences | default/backgrounds.fa |
-| -saliency | calculate per base nucleotide importance | NA |
-| -vis | to be used with saliency to make plot visualizing results | NA |
+| -h, --help | show this help message and exit | NA |
+| -trainDir --trainDir | directory containing trained DeepAccess model | test/ASCL1vsCTCF |
+| -fastas --fastas | list of fasta files to evaulate | test/ASCL1vsCTCF/test.fa |
+| -l --labels | list of labels for each bed file | C1 C2 C3 |
+| -c --comparisons | list of comparisons between different labels | ASCL1vsCTCF ASCL1vsNone runs differential EPE between ASCL1 and CTCF and EPE on ASCL1; C1,C2vsC3 runs differential EPE for (C1 and C2) vs C3 |
+| -evalMotifs --evalMotifs | PWM or PCM data base of DNA sequence motifs | default/HMv11_MOUSE.txt |
+| -evalPatterns --evalPatterns | fasta file containing DNA sequence patterns | data/ASCL1_space.fa |
+| -bg --bg | fasta file containning background sequences | default/backgrounds.fa |
+| -saliency --saliency | calculate per base nucleotide importance | NA |
+| -subtract --subtract | use subtraction instead of ratio for EPE / DEPE | False |
+| -vis --makeVis | to be used with saliency to make plot visualizing results | NA |
