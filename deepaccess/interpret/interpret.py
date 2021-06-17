@@ -72,6 +72,7 @@ def main(args):
         fname = fasta.split("/")[-1].split(".fa")[0]
         X = fasta_hots[fasta_ind]
         DA_fa_pred = DAModel.predict(X)
+        np.savetxt(opts.trainDir + "/" + fname + ".prediction", DA_fa_pred)
         if opts.saliency:
             saliencyX = []
             comps = [
@@ -140,7 +141,7 @@ def main(args):
                     saliencyX[ci],
                 )
 
-                np.savetxt(opts.trainDir + "/" + fname + ".prediction", DA_fa_pred)
+        
 
     if opts.evalMotifs is not None:
         if opts.evalMotifs == "HMv11_MOUSE":
