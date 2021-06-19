@@ -14,10 +14,18 @@ def main():
                         help="command arguments",
                         nargs=argparse.REMAINDER
                         )
+    parser.add_argument("-version", "--version",
+                        action='store_true',
+                        default=False)
+    
     opts = parser.parse_args()
+
+    if opts.version:
+        print('deepaccess '+deepaccess.__version__)
+    
     command = command_list[command_list_str.index(opts.command)]
     command_args = opts.command_args
     command.main(command_args)
-    
+
 if __name__ == "__main__":
     main()

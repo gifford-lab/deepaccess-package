@@ -12,10 +12,10 @@ setuptools.setup(
     +"ensemble of neural networks for chromatin accessibility",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/gifford-lab/deepaccess-package",
     packages=setuptools.find_packages(),
     project_urls={
-        "Bug Tracker": "https://github.com/pypa/sampleproject/issues",
+        "Bug Tracker": "https://github.com/gifford-lab/deepaccess-package/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
