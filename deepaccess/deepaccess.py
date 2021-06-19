@@ -3,14 +3,13 @@
 import argparse
 import deepaccess.train as train
 import deepaccess.interpret as interpret
-import deepaccess
 
 
 def main():
     command_list = [train, interpret]
     command_list_str = ['train','interpret']
     parser = argparse.ArgumentParser(
-        description='deepaccess v'+deepaccess.__version__
+        description='deepaccess v0.1.2',
     )
     parser.add_argument(
         "command",
