@@ -18,6 +18,10 @@ deepaccess train \
 	   -ref mm10.fa -g mm10.chrom.sizes \
 	   -out test/ASCL1vsCTCF -nepochs 1
 
+#example predict on test
+deepaccess interpret -trainDir test/ASCL1vsCTCF \
+	   -fastas test/ASCL1vsCTCF/test.fa
+
 wget https://raw.githubusercontent.com/jhammelman/deepaccess-package/main/default/HMv11_MOUSE.txt
 
 #example test motif activity

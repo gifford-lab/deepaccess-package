@@ -2,7 +2,7 @@
 [![PyPI version](https://badge.fury.io/py/deepaccess.svg)](https://badge.fury.io/py/deepaccess)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/deepaccess/badges/installer/conda.svg)](https://conda.anaconda.org/bioconda)
 
-This is the code for training and interpretation of an ensemble of convolutional neural networks for multi-task classification. Instructions for downloading and getting started with the current release are available at [https://cgs.csail.mit.edu/deepaccess-package/](https://cgs.csail.mit.edu/deepaccess-package/). deepaccess is available via [pip](https://pypi.org/project/pip/) and [bioconda](https://bioconda.github.io/). The DeepAccess model trained onn ATAC-seq data from 10 mouse cell types is available as a [zenodo record](https://zenodo.org/record/4908895#.YL6YpR0pDfY).
+This is the code for training and interpretation of an ensemble of convolutional neural networks for multi-task classification. Instructions for downloading and getting started with the current release are available at [https://cgs.csail.mit.edu/deepaccess-package/](https://cgs.csail.mit.edu/deepaccess-package/). deepaccess is available via [pip](https://pypi.org/project/pip/) and [bioconda](https://bioconda.github.io/). The DeepAccess model trained on ATAC-seq data from 10 mouse cell types is available as a [zenodo record](https://zenodo.org/record/4908895#.YL6YpR0pDfY).
 
 ## Dependencies
 * [bedtools](https://bedtools.readthedocs.io/en/latest/) (v2.29.2)
