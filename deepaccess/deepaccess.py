@@ -3,6 +3,7 @@
 import argparse
 import deepaccess.train as train
 import deepaccess.interpret as interpret
+import deepaccess
 
 
 def main():
