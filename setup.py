@@ -24,6 +24,15 @@ setuptools.setup(
     ],
     package_dir={"deepaccess": "deepaccess"},
     python_requires=">=3.6",
+    install_requires=[
+        "tensorflow >= 2.4",
+        "keras >= 2.4.3",
+        "scipy >= 1.6.2",
+        "bedtools >= 2.29.2",
+        "matplotlib-base >=3.3.3",
+        "numpy >=1.19.0",
+        "scikit-learn >= 0.24.1",
+    ],
     entry_points={
         "console_scripts": ["deepaccess=deepaccess.deepaccess:main"]
     },
