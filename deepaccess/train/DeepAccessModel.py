@@ -1,10 +1,10 @@
 import os
-import keras
+from tensorflow import keras
 import pickle
 import numpy as np
-from keras.models import load_model, Sequential, Model
-from keras.layers import Dense, Input, Add
-from keras import optimizers
+from tensorflow.keras.models import load_model, Sequential, Model
+from tensorflow.keras.layers import Dense, Input, Add
+from tensorflow.keras import optimizers
 from deepaccess.ensemble_utils import *
 from deepaccess.train.CNN import *
 from deepaccess.interpret.importance_utils import saliency
