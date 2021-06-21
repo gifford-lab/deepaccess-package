@@ -7,12 +7,22 @@ filename: interpret
 We provide two methods of interpretation of trained DeepAccess models: 
 1. ExpectedPatternEffect and DifferentialExpectedPatternEffect
 2. Per-nucleotide importance
+3. Prediction
 
 #### ExpectedPatternEffect and DifferentialExpectedPatternEffect
 ExpectedPatternEffect and DifferentialExpectedPatternEffect can be run using either motifs in PWM or PCM representation (from a database like HOCOMOCO or HOMER) or patterns in a fasta representation which can be used to test spacing or combinations of motifs.
 
 #### Per-nucleotide importance 
 Per-nucleotide importance is run using an input of one or more fastas and returns the model-derived importance of each nucleotide within each fasta sequence. 
+
+#### Prediction
+For predicting from a trained model, input the directory of the model and one or more fasta sequences:
+```markdown
+deepaccess interpret -trainDir trained_deepaccessmodel -fastas seqs_1.fa seqs_2.fa
+```
+
+The output will be files trained_deepaccessmodel/seqs_1.prediction, trained_deepaccessmodel/seqs_2.prediction, containing the predicted accessibility for each class.
+
 
 ### Usage
 ```markdown
