@@ -28,7 +28,6 @@ setuptools.setup(
         "tensorflow >= 2.4",
         "keras >= 2.4.3",
         "scipy >= 1.6.2",
-        "bedtools >= 2.29.2",
         "matplotlib >=3.3.3",
         "numpy >=1.19.0",
         "scikit-learn >= 0.24.1",
