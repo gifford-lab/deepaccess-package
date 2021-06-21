@@ -1,7 +1,8 @@
-import keras
+from tensorflow import keras
 import numpy as np
-from keras.models import Sequential
-from keras.layers import (
+import tensorflow as tf
+from tf.keras.models import Sequential
+from tf.keras.layers import (
     Conv1D,
     Dense,
     Dropout,
@@ -10,7 +11,7 @@ from keras.layers import (
     MaxPooling1D,
     Flatten,
 )
-from keras import optimizers
+from tf.keras import optimizers
 import pkg_resources
 
 class CNN:

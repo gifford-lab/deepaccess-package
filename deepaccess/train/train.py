@@ -2,7 +2,7 @@ import os
 import numpy as np 
 import argparse
 import pickle
-import keras
+from tensorflow import keras
 import subprocess
 from tensorflow.python.client import device_lib
 import tensorflow as tf
