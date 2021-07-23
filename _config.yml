@@ -1,5 +1,6 @@
 theme: jekyll-theme-minimal
 show_downloads: true
 github:
-  zip_url: https://github.com/gifford-lab/deepaccess-package/releases/download/v0.1.1/deepaccess-release-0.1.1.zip
-  tar_url: https://github.com/gifford-lab/deepaccess-package/releases/download/v0.1.1/deepaccess-release-0.1.1.tar.gz
+  zip_url: https://github.com/gifford-lab/deepaccess-package/releases/download/v0.1.2/deepaccess-release-0.1.2.zip
+  tar_url: https://github.com/gifford-lab/deepaccess-package/releases/download/v0.1.2/deepaccess-release-0.1.2.tar.gz
+  
